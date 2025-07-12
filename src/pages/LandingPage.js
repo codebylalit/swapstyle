@@ -110,7 +110,7 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-almond via-vanilla to-almond">
+    <div className="min-h-screen bg-almond">
       {/* Hero Section */}
       <section className="relative w-full flex flex-col items-center justify-center py-24 px-4 sm:px-8">
         {/* Background Pattern */}
@@ -129,8 +129,7 @@ export default function LandingPage() {
           </div>
           
           <h1 className="text-5xl md:text-7xl font-bold text-carob mb-8 leading-tight">
-            Refresh Your Closet,{' '}
-            <span className="text-gradient">Sustainably</span>
+            Refresh Your Closet, Sustainably
           </h1>
           
           <p className="text-xl md:text-2xl text-matcha mb-12 max-w-3xl mx-auto leading-relaxed">

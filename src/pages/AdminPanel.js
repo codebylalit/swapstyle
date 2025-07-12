@@ -6,7 +6,7 @@ import {
   Package, 
   CheckCircle, 
   XCircle, 
-  Eye,
+  Eye, 
   Trash2,
   ArrowLeft,
   Shield,
@@ -34,13 +34,13 @@ const AdminPanel = () => {
     try {
       // Fetch pending items
       const { data: itemsData, error: itemsError } = await supabase
-        .from(TABLES.ITEMS)
-        .select(`
-          *,
-          users:uploader_id(name, email)
-        `)
-        .eq('approved', false)
-        .order('created_at', { ascending: false })
+          .from(TABLES.ITEMS)
+          .select(`
+            *,
+            users:uploader_id(name, email)
+          `)
+          .eq('approved', false)
+          .order('created_at', { ascending: false })
 
       if (itemsError) {
         setError(itemsError.message || 'Error fetching pending items');
@@ -50,9 +50,9 @@ const AdminPanel = () => {
 
       // Fetch users
       const { data: usersData, error: usersError } = await supabase
-        .from(TABLES.USERS)
-        .select('*')
-        .order('created_at', { ascending: false })
+          .from(TABLES.USERS)
+          .select('*')
+          .order('created_at', { ascending: false })
 
       if (usersError) {
         setError(usersError.message || 'Error fetching users');
@@ -310,27 +310,27 @@ const AdminPanel = () => {
                           <div className="flex items-center space-x-4 mt-2">
                             <span className="text-xs text-chai">
                               by {item.users?.name || 'Unknown'}
-                            </span>
+                                  </span>
                             <span className="text-xs text-chai">
                               {new Date(item.created_at).toLocaleDateString()}
-                            </span>
-                          </div>
-                        </div>
+                                </span>
+                              </div>
+                            </div>
                         <div className="flex space-x-2">
-                          <button
-                            onClick={() => handleApproveItem(item.id)}
+                                  <button
+                                    onClick={() => handleApproveItem(item.id)}
                             className="btn-primary flex items-center gap-1"
-                          >
+                                  >
                             <CheckCircle className="h-4 w-4" />
                             <span>Approve</span>
-                          </button>
-                          <button
-                            onClick={() => handleRejectItem(item.id)}
+                                  </button>
+                                  <button
+                                    onClick={() => handleRejectItem(item.id)}
                             className="btn-danger flex items-center gap-1"
                           >
                             <XCircle className="h-4 w-4" />
                             <span>Reject</span>
-                          </button>
+                              </button>
                         </div>
                       </div>
                     </div>
@@ -346,10 +346,10 @@ const AdminPanel = () => {
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-semibold text-carob">User Management</h3>
                 <span className="badge badge-primary">{users.length} users</span>
-              </div>
+                </div>
               
-              <div className="card">
-                <div className="overflow-x-auto">
+                <div className="card">
+                  <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-primary-200">
@@ -359,53 +359,53 @@ const AdminPanel = () => {
                         <th className="text-left py-3 px-4 font-medium text-chai">Status</th>
                         <th className="text-left py-3 px-4 font-medium text-chai">Joined</th>
                         <th className="text-left py-3 px-4 font-medium text-chai">Actions</th>
-                      </tr>
-                    </thead>
+                        </tr>
+                      </thead>
                     <tbody>
-                      {users.map((user) => (
+                        {users.map((user) => (
                         <tr key={user.id} className="border-b border-primary-100 hover:bg-primary-50">
                           <td className="py-3 px-4">
                             <div className="flex items-center space-x-3">
                               <div className="h-8 w-8 bg-primary-100 rounded-full flex items-center justify-center">
                                 <Users className="h-4 w-4 text-primary-600" />
-                              </div>
+                                </div>
                               <div>
                                 <p className="font-medium text-carob">{user.name || 'Anonymous'}</p>
                                 {user.isAdmin && (
                                   <span className="badge badge-primary text-xs">Admin</span>
                                 )}
                               </div>
-                            </div>
-                          </td>
+                              </div>
+                            </td>
                           <td className="py-3 px-4 text-matcha">{user.email}</td>
                           <td className="py-3 px-4">
                             <span className="font-medium text-carob">{user.points || 0}</span>
-                          </td>
+                            </td>
                           <td className="py-3 px-4">
                             <span className={`badge ${
                               user.last_sign_in_at ? 'badge-success' : 'badge-secondary'
                             }`}>
                               {user.last_sign_in_at ? 'Active' : 'Inactive'}
-                            </span>
-                          </td>
+                              </span>
+                            </td>
                           <td className="py-3 px-4 text-chai">
-                            {new Date(user.created_at).toLocaleDateString()}
-                          </td>
+                              {new Date(user.created_at).toLocaleDateString()}
+                            </td>
                           <td className="py-3 px-4">
-                            <button
+                              <button
                               onClick={() => handleDeleteUser(user.id)}
                               className="btn-ghost text-red-600 hover:text-red-700"
                               disabled={user.isAdmin}
                             >
                               <Trash2 className="h-4 w-4" />
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-              </div>
             </div>
           )}
         </div>

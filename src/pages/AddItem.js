@@ -153,38 +153,38 @@ const AddItem = () => {
   }
 
   return (
-    <div className="min-h-screen bg-almond py-8">
+    <div className="min-h-screen bg-almond py-12">
       <ErrorMessage message={error} />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-carob mb-2">List a New Item</h1>
-          <p className="text-matcha">Share your clothes with the community</p>
+        <div className="mb-10 text-center">
+          <h1 className="text-4xl font-bold mb-2">List a New Item</h1>
+          <p className="text-matcha text-lg">Share your clothes with the community</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form onSubmit={handleSubmit} className="space-y-10">
           {/* Image Upload Section */}
           <div className="card">
-            <h2 className="text-lg font-semibold text-carob mb-4">Item Images</h2>
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <h2 className="text-2xl font-semibold mb-6">Item Images</h2>
+            <div className="space-y-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
                 {images.map((image, index) => (
                   <div key={index} className="relative group">
                     <img 
                       src={image} 
                       alt={`Item ${index + 1}`}
-                      className="w-full h-32 object-cover rounded-xl shadow-soft"
+                      className="w-full h-36 object-cover rounded-2xl shadow-soft"
                     />
                     <button
                       type="button"
                       onClick={() => removeImage(index)}
-                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 shadow"
+                      className="absolute -top-3 -right-3 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 shadow"
                     >
-                      <X className="h-4 w-4" />
+                      <X className="h-5 w-5" />
                     </button>
                   </div>
                 ))}
                 {images.length < 5 && (
-                  <label className="border-2 border-dashed border-primary-200 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-primary-500 transition-colors bg-primary-50">
+                  <label className="border-2 border-dashed border-primary-200 rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer hover:border-primary-500 transition-colors bg-primary-50">
                     <input
                       type="file"
                       accept="image/*"
@@ -194,42 +194,42 @@ const AddItem = () => {
                       disabled={uploading}
                     />
                     {uploading ? (
-                      <div className="loading-spinner h-8 w-8"></div>
+                      <div className="loading-spinner h-10 w-10"></div>
                     ) : (
                       <>
-                        <Upload className="h-6 w-6 text-primary mb-2" />
-                        <span className="text-chai text-sm">Upload</span>
+                        <Upload className="h-7 w-7 text-primary mb-2" />
+                        <span className="text-chai text-base">Upload</span>
                       </>
                     )}
                   </label>
                 )}
               </div>
-              <p className="text-xs text-chai">Up to 5 images. Max 5MB each.</p>
+              <p className="text-sm text-chai">Up to 5 images. Max 5MB each.</p>
             </div>
           </div>
 
           {/* Item Details Section */}
           <div className="card">
-            <h2 className="text-lg font-semibold text-carob mb-4">Item Details</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <h2 className="text-2xl font-semibold mb-6">Item Details</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
-                <label className="block text-chai font-medium mb-1">Title *</label>
+                <label className="block text-chai font-semibold mb-2">Title *</label>
                 <input
                   name="title"
                   value={formData.title}
                   onChange={handleInputChange}
-                  className="input-field"
+                  className="input-field text-base"
                   placeholder="e.g. Blue Denim Jacket"
                   required
                 />
               </div>
               <div>
-                <label className="block text-chai font-medium mb-1">Category *</label>
+                <label className="block text-chai font-semibold mb-2">Category *</label>
                 <select
                   name="category"
                   value={formData.category}
                   onChange={handleInputChange}
-                  className="select-field"
+                  className="select-field text-base"
                   required
                 >
                   <option value="">Select category</option>
@@ -239,12 +239,12 @@ const AddItem = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-chai font-medium mb-1">Type</label>
+                <label className="block text-chai font-semibold mb-2">Type</label>
                 <select
                   name="type"
                   value={formData.type}
                   onChange={handleInputChange}
-                  className="select-field"
+                  className="select-field text-base"
                 >
                   <option value="">Select type</option>
                   {types.map(type => (
@@ -253,12 +253,12 @@ const AddItem = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-chai font-medium mb-1">Size</label>
+                <label className="block text-chai font-semibold mb-2">Size</label>
                 <select
                   name="size"
                   value={formData.size}
                   onChange={handleInputChange}
-                  className="select-field"
+                  className="select-field text-base"
                 >
                   <option value="">Select size</option>
                   {sizes.map(size => (
@@ -267,12 +267,12 @@ const AddItem = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-chai font-medium mb-1">Condition</label>
+                <label className="block text-chai font-semibold mb-2">Condition</label>
                 <select
                   name="condition"
                   value={formData.condition}
                   onChange={handleInputChange}
-                  className="select-field"
+                  className="select-field text-base"
                 >
                   <option value="">Select condition</option>
                   {conditions.map(cond => (
@@ -281,48 +281,48 @@ const AddItem = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-chai font-medium mb-1">Tags</label>
+                <label className="block text-chai font-semibold mb-2">Tags</label>
                 <input
                   name="tags"
                   value={formData.tags}
                   onChange={handleInputChange}
-                  className="input-field"
+                  className="input-field text-base"
                   placeholder="e.g. summer, casual, blue"
                 />
-                <p className="text-xs text-chai mt-1">Comma separated</p>
+                <p className="text-sm text-chai mt-2">Comma separated</p>
               </div>
             </div>
             <div>
-              <label className="block text-chai font-medium mb-1 mt-4">Description *</label>
+              <label className="block text-chai font-semibold mb-2 mt-6">Description *</label>
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
-                className="textarea-field"
+                className="textarea-field text-base"
                 placeholder="Describe your item..."
                 required
               />
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-end">
+          <div className="flex flex-col sm:flex-row gap-5 justify-end">
             <button
               type="submit"
-              className="btn-primary flex items-center gap-2"
+              className="btn-primary flex items-center gap-3 text-lg"
               disabled={loading}
             >
               {loading ? (
-                <div className="loading-spinner h-5 w-5"></div>
+                <div className="loading-spinner h-6 w-6"></div>
               ) : (
                 <>
-                  <Plus className="h-5 w-5" />
+                  <Plus className="h-6 w-6" />
                   <span>List Item</span>
                 </>
               )}
             </button>
             <button
               type="button"
-              className="btn-outline"
+              className="btn-outline text-lg"
               onClick={() => navigate('/dashboard')}
               disabled={loading}
             >

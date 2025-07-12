@@ -104,17 +104,17 @@ const BrowseItems = () => {
   const hasActiveFilters = searchTerm || (selectedCategory && selectedCategory !== 'All') || (selectedType && selectedType !== 'All')
 
   return (
-    <div className="min-h-screen bg-almond py-8 w-full px-4 sm:px-8">
+    <div className="min-h-screen bg-almond py-12 w-full px-4 sm:px-8">
       <ErrorMessage message={error} />
       <div className="w-full max-w-5xl mx-auto px-0 sm:px-0">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-carob">Browse Items</h1>
-          <p className="text-matcha">Discover amazing pieces from our community</p>
+        <div className="mb-10">
+          <h1 className="text-4xl text-carob font-bold mb-2">Browse Items</h1>
+          <p className="text-matcha text-lg">Discover amazing pieces from our community</p>
         </div>
         {/* Search and Filters */}
-        <div className="card mb-8 w-full">
-          <form onSubmit={handleSearch} className="space-y-6 w-full">
+        <div className="card mb-10 w-full">
+          <form onSubmit={handleSearch} className="space-y-8 w-full">
             {/* Search Bar */}
             <div className="relative w-full">
               <input
@@ -122,26 +122,26 @@ const BrowseItems = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search items by title, description, or tags..."
-                className="input-field pl-4 pr-12 py-4"
+                className="input-field pl-5 pr-14 py-4 text-lg"
               />
               <button
                 type="submit"
-                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                className="absolute inset-y-0 right-0 pr-4 flex items-center"
               >
-                <Search className="h-5 w-5 text-primary-400" />
+                <Search className="h-6 w-6 text-primary-400" />
               </button>
             </div>
 
             {/* Filters */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
-                <label className="block text-sm font-medium text-chai mb-1">
+                <label className="block text-base font-medium text-chai mb-2">
                   Category
                 </label>
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="select-field"
+                  className="select-field text-base"
                 >
                   {categories.map(category => (
                     <option key={category} value={category}>{category}</option>
@@ -150,13 +150,13 @@ const BrowseItems = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-chai mb-1">
+                <label className="block text-base font-medium text-chai mb-2">
                   Type
                 </label>
                 <select
                   value={selectedType}
                   onChange={(e) => setSelectedType(e.target.value)}
-                  className="select-field"
+                  className="select-field text-base"
                 >
                   {types.map(type => (
                     <option key={type} value={type}>{type}</option>
@@ -164,10 +164,10 @@ const BrowseItems = () => {
                 </select>
               </div>
 
-              <div className="flex items-end space-x-2">
+              <div className="flex items-end space-x-3">
                 <button
                   type="submit"
-                  className="btn-primary flex-1"
+                  className="btn-primary flex-1 text-lg"
                 >
                   Search
                 </button>
@@ -175,7 +175,7 @@ const BrowseItems = () => {
                   <button
                     type="button"
                     onClick={clearFilters}
-                    className="btn-outline"
+                    className="btn-outline text-lg"
                   >
                     Clear
                   </button>

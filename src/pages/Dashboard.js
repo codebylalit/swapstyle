@@ -134,14 +134,14 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-almond py-8 w-full px-4 sm:px-8">
+    <div className="min-h-screen bg-almond py-12 w-full px-4 sm:px-8">
       <ErrorMessage message={error} />
       <div className="w-full max-w-5xl mx-auto px-0 sm:px-0">
         {/* Header */}
-        <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+        <div className="mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-carob">Dashboard</h1>
-            <p className="text-matcha">Manage your profile, items, and swaps</p>
+            <h1 className="text-4xl font-bold mb-2">Dashboard</h1>
+            <p className="text-matcha text-lg">Manage your profile, items, and swaps</p>
           </div>
           {userProfile?.isAdmin && (
             <Link to="/admin" className="btn-danger mt-4 sm:mt-0">
@@ -151,47 +151,47 @@ const Dashboard = () => {
         </div>
         
         {/* Profile Card */}
-        <div className="card mb-8 w-full">
-          <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
+        <div className="card mb-10 w-full">
+          <div className="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-8">
             {userProfile?.avatar_url ? (
               <img 
                 src={userProfile.avatar_url} 
                 alt="Profile" 
-                className="h-20 w-20 rounded-full object-cover shadow-soft"
+                className="h-24 w-24 rounded-full object-cover shadow-soft border-4 border-primary-100"
               />
             ) : (
-              <div className="h-20 w-20 bg-primary-100 rounded-full flex items-center justify-center shadow-soft">
-                <User className="h-10 w-10 text-primary-600" />
+              <div className="h-24 w-24 bg-primary-100 rounded-full flex items-center justify-center shadow-soft border-4 border-primary-100">
+                <User className="h-12 w-12 text-primary-600" />
               </div>
             )}
             <div className="flex-1 w-full text-center md:text-left">
-              <h2 className="text-2xl font-semibold text-carob mb-1">
+              <h2 className="text-3xl font-semibold mb-2">
                 {userProfile?.name || 'User'}
               </h2>
-              <p className="text-matcha mb-3">{user?.email}</p>
-              <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-2 sm:space-y-0 sm:space-x-6">
-                <span className="flex items-center space-x-2 text-sm text-matcha">
-                  <Gift className="h-4 w-4" />
-                  <span className="font-medium">{userProfile?.points || 0} points</span>
+              <p className="text-matcha mb-4 text-lg">{user?.email}</p>
+              <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-2 sm:space-y-0 sm:space-x-8">
+                <span className="flex items-center space-x-2 text-base text-matcha">
+                  <Gift className="h-5 w-5" />
+                  <span className="font-semibold">{userProfile?.points || 0} points</span>
                 </span>
-                <span className="text-sm text-chai">
+                <span className="text-base text-chai">
                   Member since {new Date(user?.created_at).toLocaleDateString()}
                 </span>
               </div>
             </div>
-            <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+            <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto mt-6 md:mt-0">
               <Link 
                 to="/add-item" 
-                className="btn-primary flex items-center justify-center gap-2"
+                className="btn-primary flex items-center justify-center gap-2 text-lg"
               >
-                <Plus className="h-4 w-4" />
+                <Plus className="h-5 w-5" />
                 <span>Add Item</span>
               </Link>
               <button
                 onClick={handleSignOut}
-                className="btn-outline flex items-center justify-center gap-2"
+                className="btn-outline flex items-center justify-center gap-2 text-lg"
               >
-                <LogOut className="h-4 w-4" />
+                <LogOut className="h-5 w-5" />
                 <span>Sign Out</span>
               </button>
             </div>
