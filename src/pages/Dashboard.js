@@ -11,16 +11,24 @@ import {
   Plus,
   Edit,
   Trash2,
-  Eye
+  Eye,
+  LogOut
 } from 'lucide-react'
 import toast from 'react-hot-toast'
+import ErrorMessage from '../components/ErrorMessage';
 
 const Dashboard = () => {
-  const { user, userProfile } = useAuth()
+  const { user, userProfile, signOut } = useAuth()
   const [userItems, setUserItems] = useState([])
   const [swaps, setSwaps] = useState([])
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('profile')
+  const [error, setError] = useState(null);
+
+  const handleSignOut = async () => {
+    await signOut()
+    window.location.href = '/'
+  }
 
   useEffect(() => {
     if (user) {
@@ -38,7 +46,7 @@ const Dashboard = () => {
         .order('created_at', { ascending: false })
 
       if (itemsError) {
-        console.error('Error fetching user items:', itemsError)
+        setError(itemsError.message || 'Error fetching user items');
       } else {
         setUserItems(itemsData || [])
       }
@@ -56,19 +64,19 @@ const Dashboard = () => {
         .order('created_at', { ascending: false })
 
       if (swapsError) {
-        console.error('Error fetching swaps:', swapsError)
+        setError(swapsError.message || 'Error fetching swaps');
       } else {
         setSwaps(swapsData || [])
       }
-    } catch (error) {
-      console.error('Error fetching user data:', error)
+    } catch (err) {
+      setError('Error fetching user data: ' + (err.message || err));
     } finally {
       setLoading(false)
     }
   }
 
   const handleDeleteItem = async (itemId) => {
-    if (!confirm('Are you sure you want to delete this item?')) return
+    if (!window.confirm('Are you sure you want to delete this item?')) return
 
     try {
       const { error } = await supabase
@@ -126,17 +134,24 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-almond py-8 w-full px-4 sm:px-8">
+      <ErrorMessage message={error} />
+      <div className="w-full px-0 sm:px-0">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600">Manage your profile, items, and swaps</p>
+        <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-carob">Dashboard</h1>
+            <p className="text-matcha">Manage your profile, items, and swaps</p>
+          </div>
+          {/* {userProfile && (userProfile.isAdmin === true || userProfile.isAdmin === 'true') && ( */}
+            <Link to="/admin" className="btn-red-500 mt-4 sm:mt-0">
+              Go to Admin Panel
+            </Link>
+          {/* )} */}
         </div>
-
         {/* Profile Card */}
-        <div className="card mb-8">
-          <div className="flex items-center space-x-4">
+        <div className="card mb-8 w-full">
+          <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
             {userProfile?.avatar_url ? (
               <img 
                 src={userProfile.avatar_url} 
@@ -148,24 +163,24 @@ const Dashboard = () => {
                 <User className="h-8 w-8 text-primary-600" />
               </div>
             )}
-            <div className="flex-1">
-              <h2 className="text-xl font-semibold text-gray-900">
+            <div className="flex-1 w-full">
+              <h2 className="text-xl font-semibold text-carob">
                 {userProfile?.name || 'User'}
               </h2>
-              <p className="text-gray-600">{user?.email}</p>
-              <div className="flex items-center space-x-4 mt-2">
-                <span className="flex items-center space-x-1 text-sm text-gray-600">
+              <p className="text-matcha">{user?.email}</p>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 mt-2">
+                <span className="flex items-center space-x-1 text-sm text-matcha">
                   <Gift className="h-4 w-4" />
                   <span>{userProfile?.points || 0} points</span>
                 </span>
-                <span className="text-sm text-gray-500">
+                <span className="text-sm text-chai">
                   Member since {new Date(user?.created_at).toLocaleDateString()}
                 </span>
               </div>
             </div>
             <Link 
               to="/add-item" 
-              className="btn-primary flex items-center space-x-2"
+              className="btn-primary flex items-center space-x-2 w-full md:w-auto justify-center"
             >
               <Plus className="h-4 w-4" />
               <span>Add Item</span>
@@ -186,8 +201,8 @@ const Dashboard = () => {
                 onClick={() => setActiveTab(tab.id)}
                 className={`py-2 px-1 border-b-2 font-medium text-sm ${
                   activeTab === tab.id
-                    ? 'border-primary-500 text-primary-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-chai hover:text-carob hover:border-pistache'
                 }`}
               >
                 {tab.label}
@@ -201,34 +216,43 @@ const Dashboard = () => {
           {/* Profile Tab */}
           {activeTab === 'profile' && (
             <div className="card">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Profile Information</h3>
+              <h3 className="text-lg font-semibold text-carob mb-4">Profile Information</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-chai mb-1">
                     Full Name
                   </label>
-                  <p className="text-gray-900">{userProfile?.name || 'Not set'}</p>
+                  <p className="text-carob">{userProfile?.name || 'Not set'}</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-chai mb-1">
                     Email
                   </label>
-                  <p className="text-gray-900">{user?.email}</p>
+                  <p className="text-carob">{user?.email}</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-chai mb-1">
                     Points Balance
                   </label>
-                  <p className="text-gray-900">{userProfile?.points || 0} points</p>
+                  <p className="text-carob">{userProfile?.points || 0} points</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-chai mb-1">
                     Account Type
                   </label>
-                  <p className="text-gray-900">
+                  <p className="text-carob">
                     {userProfile?.isAdmin ? 'Admin' : 'Regular User'}
                   </p>
                 </div>
+              </div>
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <button
+                  onClick={handleSignOut}
+                  className="btn-red-500 flex items-center space-x-2"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span>Sign Out</span>
+                </button>
               </div>
             </div>
           )}
@@ -237,7 +261,7 @@ const Dashboard = () => {
           {activeTab === 'items' && (
             <div>
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-lg font-semibold text-gray-900">My Items</h3>
+                <h3 className="text-lg font-semibold text-carob">My Items</h3>
                 <Link to="/add-item" className="btn-primary">
                   Add New Item
                 </Link>
@@ -245,9 +269,9 @@ const Dashboard = () => {
               
               {userItems.length === 0 ? (
                 <div className="card text-center py-12">
-                  <Gift className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">No items yet</h3>
-                  <p className="text-gray-600 mb-4">Start sharing your clothes with the community!</p>
+                  <Gift className="h-12 w-12 text-chai mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-carob mb-2">No items yet</h3>
+                  <p className="text-matcha mb-4">Start sharing your clothes with the community!</p>
                   <Link to="/add-item" className="btn-primary">
                     List Your First Item
                   </Link>
@@ -264,33 +288,35 @@ const Dashboard = () => {
                             className="w-full h-48 object-cover rounded-lg"
                           />
                         ) : (
-                          <div className="w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center">
-                            <span className="text-gray-400">No image</span>
+                          <div className="w-full h-48 bg-pistache rounded-lg flex items-center justify-center">
+                            <span className="text-chai">No image</span>
                           </div>
                         )}
                       </div>
-                      <h4 className="font-semibold text-gray-900 mb-2">{item.title}</h4>
-                      <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                      <h4 className="font-semibold text-carob mb-2">{item.title}</h4>
+                      <p className="text-sm text-matcha mb-3 line-clamp-2">
                         {item.description}
                       </p>
                       <div className="flex items-center justify-between">
                         <span className={`text-xs px-2 py-1 rounded-full ${
                           item.status === 'available' 
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-gray-100 text-gray-800'
+                            ? 'bg-matcha text-vanilla'
+                            : item.status === 'pending'
+                            ? 'bg-yellow-100 text-yellow-800'
+                            : 'bg-pistache text-carob'
                         }`}>
                           {item.status}
                         </span>
                         <div className="flex space-x-2">
                           <Link 
                             to={`/item/${item.id}`}
-                            className="text-primary-600 hover:text-primary-700 p-1"
+                            className="text-primary hover:text-carob p-1"
                           >
                             <Eye className="h-4 w-4" />
                           </Link>
                           <button
                             onClick={() => handleDeleteItem(item.id)}
-                            className="text-red-600 hover:text-red-700 p-1"
+                            className="text-chai hover:text-carob p-1"
                           >
                             <Trash2 className="h-4 w-4" />
                           </button>
@@ -306,13 +332,13 @@ const Dashboard = () => {
           {/* Swaps Tab */}
           {activeTab === 'swaps' && (
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-6">Swap History</h3>
+              <h3 className="text-lg font-semibold text-carob mb-6">Swap History</h3>
               
               {swaps.length === 0 ? (
                 <div className="card text-center py-12">
-                  <Clock className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">No swaps yet</h3>
-                  <p className="text-gray-600">Start browsing items to make your first swap!</p>
+                  <Clock className="h-12 w-12 text-chai mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-carob mb-2">No swaps yet</h3>
+                  <p className="text-matcha">Start browsing items to make your first swap!</p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -328,22 +354,22 @@ const Dashboard = () => {
                                 className="h-12 w-12 object-cover rounded-lg"
                               />
                             ) : (
-                              <div className="h-12 w-12 bg-gray-200 rounded-lg flex items-center justify-center">
-                                <span className="text-gray-400 text-xs">No img</span>
+                              <div className="h-12 w-12 bg-pistache rounded-lg flex items-center justify-center">
+                                <span className="text-chai text-xs">No img</span>
                               </div>
                             )}
                           </div>
                           <div>
-                            <h4 className="font-medium text-gray-900">
+                            <h4 className="font-medium text-carob">
                               {swap.items?.title || 'Unknown Item'}
                             </h4>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-matcha">
                               {swap.requester_id === user.id 
                                 ? `Requested from ${swap.owner?.name || 'Unknown'}`
                                 : `Requested by ${swap.requester?.name || 'Unknown'}`
                               }
                             </p>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-chai">
                               {new Date(swap.created_at).toLocaleDateString()}
                             </p>
                           </div>

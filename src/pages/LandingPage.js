@@ -1,238 +1,209 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { ArrowRight, Heart, Users, Award, TrendingUp } from 'lucide-react'
-import { supabase, TABLES } from '../lib/supabase'
+import React, { useEffect, useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+import { Link } from 'react-router-dom';
+import { supabase, TABLES } from '../lib/supabase';
+import { ArrowRight, Heart, Users, Leaf, Sparkles } from 'lucide-react';
+import Navbar from '../components/Navbar';
 
-const LandingPage = () => {
-  const [featuredItems, setFeaturedItems] = useState([])
-  const [loading, setLoading] = useState(true)
+const categories = [
+  { name: 'Tops', icon: '👕', color: 'bg-blue-100' },
+  { name: 'Bottoms', icon: '👖', color: 'bg-green-100' },
+  { name: 'Dresses', icon: '👗', color: 'bg-pink-100' },
+  { name: 'Outerwear', icon: '🧥', color: 'bg-purple-100' },
+  { name: 'Shoes', icon: '👠', color: 'bg-yellow-100' },
+  { name: 'Accessories', icon: '👜', color: 'bg-orange-100' },
+  { name: 'Other', icon: '🎽', color: 'bg-gray-100' }
+];
+
+const features = [
+  {
+    icon: <Heart className="h-8 w-8 text-red-500" />,
+    title: 'Sustainable Fashion',
+    description: 'Reduce waste and give clothes a second life through community sharing.'
+  },
+  {
+    icon: <Users className="h-8 w-8 text-blue-500" />,
+    title: 'Community Driven',
+    description: 'Connect with fashion-conscious individuals who care about the environment.'
+  },
+  {
+    icon: <Leaf className="h-8 w-8 text-green-500" />,
+    title: 'Eco-Friendly',
+    description: 'Make a positive impact on the planet with every swap and exchange.'
+  },
+  {
+    icon: <Sparkles className="h-8 w-8 text-purple-500" />,
+    title: 'Unique Finds',
+    description: 'Discover one-of-a-kind pieces that tell a story and fit your style.'
+  }
+];
+
+export default function LandingPage() {
+  const { user, loading } = useAuth();
+  const [featuredItems, setFeaturedItems] = useState([]);
+  const [itemsLoading, setItemsLoading] = useState(true);
 
   useEffect(() => {
-    fetchFeaturedItems()
-  }, [])
-
-  const fetchFeaturedItems = async () => {
-    try {
+    async function fetchFeatured() {
+      setItemsLoading(true);
       const { data, error } = await supabase
         .from(TABLES.ITEMS)
-        .select(`
-          *,
-          users:uploader_id(name, avatar_url)
-        `)
+        .select('*')
         .eq('approved', true)
         .eq('status', 'available')
         .order('created_at', { ascending: false })
-        .limit(6)
-
-      if (error) {
-        console.error('Error fetching featured items:', error)
-        return
-      }
-
-      setFeaturedItems(data || [])
-    } catch (error) {
-      console.error('Error fetching featured items:', error)
-    } finally {
-      setLoading(false)
+        .limit(8);
+      setFeaturedItems(data || []);
+      setItemsLoading(false);
     }
-  }
-
-  const features = [
-    {
-      icon: <Heart className="h-8 w-8 text-primary-600" />,
-      title: 'Sustainable Fashion',
-      description: 'Reduce waste and promote circular fashion by sharing clothes with your community.'
-    },
-    {
-      icon: <Users className="h-8 w-8 text-primary-600" />,
-      title: 'Community Driven',
-      description: 'Connect with fashion-conscious individuals who care about the environment.'
-    },
-    {
-      icon: <Award className="h-8 w-8 text-primary-600" />,
-      title: 'Point System',
-      description: 'Earn points for sharing items and redeem them for new pieces you love.'
-    },
-    {
-      icon: <TrendingUp className="h-8 w-8 text-primary-600" />,
-      title: 'Quality Items',
-      description: 'All items are carefully curated and approved by our community moderators.'
-    }
-  ]
+    fetchFeatured();
+  }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-almond via-vanilla to-almond">
+      <Navbar />
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary-50 to-secondary-50 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-              Welcome to{' '}
-              <span className="text-primary-600">WearShare</span>
-            </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Join the sustainable fashion revolution. Share, swap, and discover amazing clothing items 
-              while earning points and reducing fashion waste.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link 
-                to="/signup" 
-                className="btn-primary text-lg px-8 py-3 flex items-center justify-center"
-              >
-                Start Swapping
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-              <Link 
-                to="/browse" 
-                className="btn-outline text-lg px-8 py-3"
-              >
-                Browse Items
-              </Link>
-            </div>
-          </div>
+      <section className="relative w-full flex flex-col items-center justify-center py-20 px-4 sm:px-8">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-20 left-10 w-32 h-32 bg-primary rounded-full"></div>
+          <div className="absolute top-40 right-20 w-24 h-24 bg-secondary rounded-full"></div>
+          <div className="absolute bottom-20 left-20 w-16 h-16 bg-primary rounded-full"></div>
         </div>
-      </section>
 
-      {/* Features Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Why Choose WearShare?
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              We're building a community that values sustainability, quality, and connection.
-            </p>
+        <div className="relative z-10 text-center max-w-4xl mx-auto">
+          <div className="mb-6">
+            <span className="badge-primary text-sm font-medium px-4 py-2">
+              🌱 Sustainable Fashion Community
+            </span>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <h1 className="text-5xl md:text-7xl font-bold text-carob mb-6 leading-tight">
+            Refresh Your Closet,{' '}
+            <span className="text-gradient">Sustainably</span>
+          </h1>
+          
+          <p className="text-xl md:text-2xl text-matcha mb-8 max-w-3xl mx-auto leading-relaxed">
+            Join our community platform to swap, redeem, and discover clothing—making fashion circular, fun, and eco-friendly.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 w-full max-w-md mx-auto">
+            {loading ? (
+              <div className="loading-dots">
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            ) : user ? (
+              <>
+                <Link to="/dashboard" className="btn-primary text-lg px-8 py-4 w-full sm:w-auto flex items-center justify-center gap-2 group">
+                  Go to Dashboard
+                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+                <Link to="/browse" className="btn-outline text-lg px-8 py-4 w-full sm:w-auto">
+                  Browse Items
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/signup" className="btn-primary text-lg px-8 py-4 w-full sm:w-auto flex items-center justify-center gap-2 group">
+                  Get Started Free
+                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+                <Link to="/browse" className="btn-outline text-lg px-8 py-4 w-full sm:w-auto">
+                  Browse Items
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Features Section */}
+        <div className="w-full max-w-6xl mx-auto mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, index) => (
-              <div key={index} className="text-center">
-                <div className="flex justify-center mb-4">
+              <div key={index} className="card-hover text-center p-6 slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                <div className="mb-4 flex justify-center">
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600">
-                  {feature.description}
-                </p>
+                <h3 className="text-lg font-semibold text-carob mb-2">{feature.title}</h3>
+                <p className="text-matcha text-sm leading-relaxed">{feature.description}</p>
               </div>
             ))}
           </div>
         </div>
-      </section>
 
-      {/* Featured Items Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Featured Items
-            </h2>
-            <p className="text-lg text-gray-600">
-              Discover amazing pieces from our community
-            </p>
+        {/* Category Grid */}
+        <div className="w-full max-w-5xl mx-auto mb-16">
+          <h2 className="text-3xl font-bold text-carob text-center mb-8">Explore Categories</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
+            {categories.map((cat, i) => (
+              <Link
+                key={i}
+                to={`/browse?category=${cat.name}`}
+                className="card-interactive p-6 flex flex-col items-center justify-center text-center group"
+              >
+                <div className={`text-4xl mb-3 group-hover:scale-110 transition-transform duration-200`}>
+                  {cat.icon}
+                </div>
+                <span className="text-carob font-semibold text-sm">{cat.name}</span>
+              </Link>
+            ))}
           </div>
+        </div>
 
-          {loading ? (
-            <div className="flex justify-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+        {/* Featured Products Grid */}
+        <div className="w-full max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold text-carob text-center mb-8">Featured Items</h2>
+          {itemsLoading ? (
+            <div className="flex justify-center py-12">
+              <div className="loading-spinner h-12 w-12"></div>
+            </div>
+          ) : featuredItems.length === 0 ? (
+            <div className="card text-center py-12">
+              <div className="text-6xl mb-4">👗</div>
+              <h3 className="text-xl font-semibold text-carob mb-2">No featured items yet</h3>
+              <p className="text-matcha mb-6">Be the first to list an item and inspire others!</p>
+              <Link to="/add-item" className="btn-primary">
+                List Your First Item
+              </Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {featuredItems.map((item) => (
-                <div key={item.id} className="card hover:shadow-lg transition-shadow">
-                  <div className="aspect-w-1 aspect-h-1 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {featuredItems.map((item, i) => (
+                <Link
+                  to={`/item/${item.id}`}
+                  key={item.id}
+                  className="card-interactive group scale-in"
+                  style={{ animationDelay: `${i * 0.1}s` }}
+                >
+                  <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-gray-100">
                     {item.images && item.images[0] ? (
                       <img 
                         src={item.images[0]} 
-                        alt={item.title}
-                        className="w-full h-48 object-cover rounded-lg"
+                        alt={item.title} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
                       />
                     ) : (
-                      <div className="w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center">
-                        <span className="text-gray-400">No image</span>
+                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        <span className="text-4xl">👕</span>
                       </div>
                     )}
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  <h3 className="text-lg font-semibold text-carob mb-2 line-clamp-1 group-hover:text-primary transition-colors">
                     {item.title}
                   </h3>
-                  <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-                    {item.description}
-                  </p>
+                  <p className="text-matcha text-sm line-clamp-2 mb-3">{item.description}</p>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">
-                      by {item.users?.name || 'Anonymous'}
-                    </span>
-                    <Link 
-                      to={`/item/${item.id}`}
-                      className="text-primary-600 hover:text-primary-700 text-sm font-medium"
-                    >
-                      View Details →
-                    </Link>
+                    <span className="badge-primary">{item.category}</span>
+                    <span className="text-xs text-chai">View Details →</span>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}
-
-          {!loading && featuredItems.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">
-                No featured items available yet. Be the first to list an item!
-              </p>
-              <Link 
-                to="/signup" 
-                className="btn-primary mt-4 inline-block"
-              >
-                Join Now
-              </Link>
-            </div>
-          )}
-
-          {featuredItems.length > 0 && (
-            <div className="text-center mt-12">
-              <Link 
-                to="/browse" 
-                className="btn-outline text-lg px-8 py-3"
-              >
-                View All Items
-              </Link>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 bg-primary-600">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Ready to Start Your Sustainable Fashion Journey?
-          </h2>
-          <p className="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
-            Join thousands of fashion-conscious individuals who are making a difference 
-            one swap at a time.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
-              to="/signup" 
-              className="bg-white text-primary-600 hover:bg-gray-100 font-medium py-3 px-8 rounded-lg transition-colors text-lg"
-            >
-              Get Started
-            </Link>
-            <Link 
-              to="/browse" 
-              className="border-2 border-white text-white hover:bg-white hover:text-primary-600 font-medium py-3 px-8 rounded-lg transition-colors text-lg"
-            >
-              Explore Items
-            </Link>
-          </div>
         </div>
       </section>
     </div>
-  )
-}
-
-export default LandingPage 
+  );
+} 

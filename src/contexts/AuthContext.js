@@ -15,52 +15,114 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     // Get initial session
     const getSession = async () => {
+      console.log('[DEBUG] Calling getSession...')
+      try {
       const { data: { session } } = await supabase.auth.getSession()
+        console.log('[DEBUG] getSession result:', session)
       setUser(session?.user ?? null)
-      
       if (session?.user) {
-        await fetchUserProfile(session.user.id)
+          console.log('[DEBUG] Session user found, fetching profile...')
+          await fetchUserProfile(session.user.id, session.user)
+        } else {
+          console.log('[DEBUG] No session user, setting userProfile to null')
+          setUserProfile(null)
+        }
+      } catch (err) {
+        console.log('[DEBUG] getSession error:', err)
+        setUser(null)
+        setUserProfile(null)
+      } finally {
+        setLoading(false)
+        console.log('[DEBUG] AuthContext loading set to false (getSession finally), user:', user, 'userProfile:', userProfile)
       }
-      
-      setLoading(false)
     }
-
     getSession()
-
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log('[DEBUG] Auth state changed:', event, session)
+        try {
         setUser(session?.user ?? null)
-        
         if (session?.user) {
-          await fetchUserProfile(session.user.id)
+            console.log('[DEBUG] Auth change: session user found, fetching profile...')
+            await fetchUserProfile(session.user.id, session.user)
         } else {
+            console.log('[DEBUG] Auth change: no session user, setting userProfile to null')
+            setUserProfile(null)
+          }
+        } catch (err) {
+          console.log('[DEBUG] Auth state change error:', err)
+          setUser(null)
           setUserProfile(null)
+        } finally {
+          setLoading(false)
+          console.log('[DEBUG] AuthContext loading set to false (auth change finally), user:', user, 'userProfile:', userProfile)
         }
-        
-        setLoading(false)
       }
     )
-
     return () => subscription.unsubscribe()
   }, [])
 
-  const fetchUserProfile = async (userId) => {
+  // Robust profile fetch: create row if missing, handle RLS errors
+  const fetchUserProfile = async (userId, userObj) => {
     try {
+      console.log('[DEBUG] fetchUserProfile called for userId:', userId)
       const { data, error } = await supabase
         .from(TABLES.USERS)
         .select('*')
         .eq('id', userId)
         .single()
+      console.log('[DEBUG] fetchUserProfile result:', { data, error })
 
       if (error) {
-        console.error('Error fetching user profile:', error)
+        // If row not found, try to create it
+        if (error.code === 'PGRST116' || error.message?.includes('No rows')) {
+          console.log('[DEBUG] No user row found, attempting to create user row...')
+          const { error: insertError } = await supabase
+            .from(TABLES.USERS)
+            .insert([{ id: userId, email: userObj?.email, name: userObj?.user_metadata?.name || '' }])
+          if (insertError) {
+            alert('Could not create user profile. Please contact support.')
+            console.log('[DEBUG] Profile fetch error (insertError):', insertError)
+            setUserProfile(null)
+            setLoading(false)
+            await signOut()
+            return
+          }
+          // Try fetching again
+          return await fetchUserProfile(userId, userObj)
+        } else {
+          alert('Error fetching user profile. Logging out.')
+          console.log('[DEBUG] Profile fetch error:', error)
+          setUserProfile(null)
+          setLoading(false)
+          await signOut()
+          return
+        }
+      }
+
+      if (!data) {
+        setUserProfile(null)
+        alert('Error fetching user profile. Logging out.')
+        await signOut()
         return
       }
 
-      setUserProfile(data)
+      // Map isadmin to isAdmin for consistency in JS
+      setUserProfile({
+        ...data,
+        isAdmin: data.isadmin === true || data.isadmin === 'true'
+      })
+      console.log('[DEBUG] userProfile set:', {
+        ...data,
+        isAdmin: data.isadmin === true || data.isadmin === 'true'
+      })
     } catch (error) {
-      console.error('Error fetching user profile:', error)
+      alert('Error fetching user profile. Logging out.')
+      console.log('[DEBUG] Profile fetch error (catch):', error)
+      setUserProfile(null)
+      setLoading(false)
+      await signOut()
     }
   }
 
@@ -118,12 +180,17 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  // Robust signOut: always clear state, alert on error
   const signOut = async () => {
     try {
       const { error } = await supabase.auth.signOut()
+      setUser(null)
+      setUserProfile(null)
       if (error) throw error
     } catch (error) {
-      console.error('Error signing out:', error)
+      setUser(null)
+      setUserProfile(null)
+      alert('Error signing out. Forcing logout.')
     }
   }
 
@@ -137,7 +204,7 @@ export const AuthProvider = ({ children }) => {
       if (error) throw error
 
       // Refresh user profile
-      await fetchUserProfile(user.id)
+      await fetchUserProfile(user.id, user)
 
       return { error: null }
     } catch (error) {

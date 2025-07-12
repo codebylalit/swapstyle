@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from './contexts/AuthContext'
-import Navbar from './components/Navbar'
+// import Navbar from './components/Navbar' // Remove global navbar
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
@@ -10,16 +10,26 @@ import Dashboard from './pages/Dashboard'
 import ItemDetail from './pages/ItemDetail'
 import AddItem from './pages/AddItem'
 import BrowseItems from './pages/BrowseItems'
-import AdminPanel from './pages/AdminPanel'
 import ProtectedRoute from './components/ProtectedRoute'
+import { supabase } from './lib/supabase';
+import AdminPanel from './pages/AdminPanel'
 import AdminRoute from './components/AdminRoute'
 
 function App() {
+  
+useEffect(() => {
+  async function testSupabase() {
+    const { data, error } = await supabase.from('users').select('*').limit(1);
+    console.log('[DEBUG] Supabase test:', { data, error });
+  }
+  testSupabase();
+}, []);
   return (
+    
     <AuthProvider>
       <Router>
-        <div className="min-h-screen bg-gray-50">
-          <Navbar />
+        <div className="min-h-screen bg-almond">
+          {/* <Navbar /> Removed from global layout */}
           <main>
             <Routes>
               <Route path="/" element={<LandingPage />} />
@@ -27,7 +37,6 @@ function App() {
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="/browse" element={<BrowseItems />} />
               <Route path="/item/:id" element={<ItemDetail />} />
-              
               {/* Protected Routes */}
               <Route 
                 path="/dashboard" 
@@ -45,7 +54,6 @@ function App() {
                   </ProtectedRoute>
                 } 
               />
-              
               {/* Admin Routes */}
               <Route 
                 path="/admin" 

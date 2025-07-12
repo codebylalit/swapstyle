@@ -13,6 +13,7 @@ import {
   AlertCircle
 } from 'lucide-react'
 import toast from 'react-hot-toast'
+import ErrorMessage from '../components/ErrorMessage';
 
 const AdminPanel = () => {
   const { userProfile } = useAuth()
@@ -26,13 +27,15 @@ const AdminPanel = () => {
     totalUsers: 0,
     totalSwaps: 0
   })
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchData()
   }, [activeTab])
 
   const fetchData = async () => {
-    setLoading(true)
+    setLoading(true);
+    setError(null);
     
     try {
       // Fetch stats
@@ -80,11 +83,10 @@ const AdminPanel = () => {
 
         setUsers(allUsers || [])
       }
-    } catch (error) {
-      console.error('Error fetching data:', error)
-      toast.error('Error loading data')
+    } catch (err) {
+      setError('Failed to load admin data: ' + (err.message || err));
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -92,7 +94,10 @@ const AdminPanel = () => {
     try {
       const { error } = await supabase
         .from(TABLES.ITEMS)
-        .update({ approved: true })
+        .update({ 
+          approved: true,
+          status: 'available'
+        })
         .eq('id', itemId)
 
       if (error) {
@@ -125,7 +130,7 @@ const AdminPanel = () => {
   }
 
   const handleDeleteItem = async (itemId) => {
-    if (!confirm('Are you sure you want to delete this item?')) return
+    if (!window.confirm('Are you sure you want to delete this item?')) return
 
     try {
       const { error } = await supabase
@@ -171,15 +176,16 @@ const AdminPanel = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-almond py-8 w-full px-4 sm:px-8">
+      <ErrorMessage message={error} />
+      <div className="w-full px-0 sm:px-0">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center space-x-3 mb-2">
-            <Shield className="h-8 w-8 text-primary-600" />
-            <h1 className="text-3xl font-bold text-gray-900">Admin Panel</h1>
+            <Shield className="h-8 w-8 text-primary" />
+            <h1 className="text-3xl font-bold text-carob">Admin Panel</h1>
           </div>
-          <p className="text-gray-600">Manage items, users, and platform content</p>
+          <p className="text-matcha">Manage items, users, and platform content</p>
         </div>
 
         {/* Stats Cards */}
@@ -190,8 +196,8 @@ const AdminPanel = () => {
                 <Package className="h-6 w-6 text-primary-600" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Items</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.totalItems}</p>
+                <p className="text-sm font-medium text-matcha">Total Items</p>
+                <p className="text-2xl font-bold text-carob">{stats.totalItems}</p>
               </div>
             </div>
           </div>
@@ -202,8 +208,8 @@ const AdminPanel = () => {
                 <AlertCircle className="h-6 w-6 text-yellow-600" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Pending Items</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.pendingItems}</p>
+                <p className="text-sm font-medium text-matcha">Pending Items</p>
+                <p className="text-2xl font-bold text-carob">{stats.pendingItems}</p>
               </div>
             </div>
           </div>
@@ -214,8 +220,8 @@ const AdminPanel = () => {
                 <Users className="h-6 w-6 text-green-600" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Users</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.totalUsers}</p>
+                <p className="text-sm font-medium text-matcha">Total Users</p>
+                <p className="text-2xl font-bold text-carob">{stats.totalUsers}</p>
               </div>
             </div>
           </div>
@@ -226,8 +232,8 @@ const AdminPanel = () => {
                 <TrendingUp className="h-6 w-6 text-blue-600" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Swaps</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.totalSwaps}</p>
+                <p className="text-sm font-medium text-matcha">Total Swaps</p>
+                <p className="text-2xl font-bold text-carob">{stats.totalSwaps}</p>
               </div>
             </div>
           </div>
@@ -235,7 +241,7 @@ const AdminPanel = () => {
 
         {/* Tabs */}
         <div className="border-b border-gray-200 mb-8">
-          <nav className="-mb-px flex space-x-8">
+          <nav className="-mb-px flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-8">
             {[
               { id: 'pending', label: 'Pending Items', count: stats.pendingItems },
               { id: 'all', label: 'All Items' },
@@ -246,8 +252,8 @@ const AdminPanel = () => {
                 onClick={() => setActiveTab(tab.id)}
                 className={`py-2 px-1 border-b-2 font-medium text-sm ${
                   activeTab === tab.id
-                    ? 'border-primary-500 text-primary-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-chai hover:text-carob hover:border-pistache'
                 }`}
               >
                 {tab.label}
@@ -310,12 +316,12 @@ const AdminPanel = () => {
                               </div>
                               <div className="flex flex-wrap gap-2 mt-2">
                                 {item.category && (
-                                  <span className="text-xs bg-primary-100 text-primary-800 px-2 py-1 rounded-full">
+                                  <span className="text-xs bg-matcha text-vanilla px-2 py-1 rounded-full">
                                     {item.category}
                                   </span>
                                 )}
                                 {item.type && (
-                                  <span className="text-xs bg-secondary-100 text-secondary-800 px-2 py-1 rounded-full">
+                                  <span className="text-xs bg-chai text-vanilla px-2 py-1 rounded-full">
                                     {item.type}
                                   </span>
                                 )}
@@ -425,8 +431,8 @@ const AdminPanel = () => {
                             <td className="px-6 py-4 whitespace-nowrap">
                               <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                                 user.isAdmin 
-                                  ? 'bg-purple-100 text-purple-800'
-                                  : 'bg-gray-100 text-gray-800'
+                                  ? 'bg-carob text-vanilla'
+                                  : 'bg-pistache text-carob'
                               }`}>
                                 {user.isAdmin ? 'Admin' : 'User'}
                               </span>

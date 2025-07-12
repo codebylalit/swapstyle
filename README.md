@@ -1,3 +1,7 @@
+admin acess:
+email : lalitgaming55@gmail.com
+pass : lalit123
+
 # WearShare – Community Clothing Exchange
 
 A full-stack web application that enables users to swap or redeem clothing items via a point-based system to encourage sustainable fashion.

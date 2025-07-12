@@ -6,31 +6,23 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        matcha: '#809671',
+        almond: '#E5E0D8',
+        pistache: '#B3B792',
+        chai: '#D2AB80',
+        carob: '#725C3A',
+        vanilla: '#E5D2B8',
         primary: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
+          DEFAULT: '#809671', // matcha
+          light: '#B3B792', // pistache
+          dark: '#725C3A', // carob
         },
         secondary: {
-          50: '#fdf4ff',
-          100: '#fae8ff',
-          200: '#f5d0fe',
-          300: '#f0abfc',
-          400: '#e879f9',
-          500: '#d946ef',
-          600: '#c026d3',
-          700: '#a21caf',
-          800: '#86198f',
-          900: '#701a75',
-        }
-      }
+          DEFAULT: '#D2AB80', // chai
+          light: '#E5D2B8', // vanilla
+          dark: '#E5E0D8', // almond
+        },
+      },
     },
   },
   plugins: [],
