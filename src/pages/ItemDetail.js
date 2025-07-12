@@ -178,18 +178,18 @@ const ItemDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      <div className="min-h-screen flex items-center justify-center bg-almond">
+        <div className="loading-spinner h-12 w-12"></div>
       </div>
     )
   }
 
   if (!item) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Item not found</h2>
-          <p className="text-gray-600 mb-4">The item you're looking for doesn't exist.</p>
+      <div className="min-h-screen flex items-center justify-center bg-almond">
+        <div className="card text-center py-12">
+          <h2 className="text-2xl font-bold text-carob mb-2">Item not found</h2>
+          <p className="text-matcha mb-6">The item you're looking for doesn't exist.</p>
           <button 
             onClick={() => navigate('/browse')}
             className="btn-primary"
@@ -202,65 +202,74 @@ const ItemDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-almond py-8 w-full px-4 sm:px-8">
+      <div className="w-full max-w-6xl mx-auto px-0 sm:px-0">
         {/* Back Button */}
-        <button
-          onClick={() => navigate('/browse')}
-          className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 mb-6"
-        >
-          <ArrowLeft className="h-5 w-5" />
-          <span>Back to Browse</span>
-        </button>
+        <div className="mb-6">
+          <button
+            onClick={() => navigate('/browse')}
+            className="btn-ghost flex items-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span>Back to Browse</span>
+          </button>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Image Gallery */}
-          <div className="space-y-4">
-            <div className="relative">
+          <div className="card">
+            <div className="relative aspect-square overflow-hidden rounded-lg bg-primary-50">
               {item.images && item.images.length > 0 ? (
                 <>
-                  <img
-                    src={item.images[currentImageIndex]}
+                  <img 
+                    src={item.images[currentImageIndex]} 
                     alt={item.title}
-                    className="w-full h-96 object-cover rounded-lg"
+                    className="w-full h-full object-cover"
                   />
                   {item.images.length > 1 && (
                     <>
                       <button
                         onClick={prevImage}
-                        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 p-2 rounded-full hover:bg-opacity-100"
+                        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-soft"
                       >
-                        <ChevronLeft className="h-5 w-5" />
+                        <ChevronLeft className="h-5 w-5 text-carob" />
                       </button>
                       <button
                         onClick={nextImage}
-                        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 p-2 rounded-full hover:bg-opacity-100"
+                        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-soft"
                       >
-                        <ChevronRight className="h-5 w-5" />
+                        <ChevronRight className="h-5 w-5 text-carob" />
                       </button>
+                      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+                        <span className="bg-black/50 text-white px-3 py-1 rounded-full text-sm">
+                          {currentImageIndex + 1} / {item.images.length}
+                        </span>
+                      </div>
                     </>
                   )}
                 </>
               ) : (
-                <div className="w-full h-96 bg-gray-200 rounded-lg flex items-center justify-center">
-                  <span className="text-gray-400">No image available</span>
+                <div className="w-full h-full flex items-center justify-center">
+                  <span className="text-primary-200 text-6xl">👕</span>
                 </div>
               )}
             </div>
-
-            {/* Thumbnail Navigation */}
+            
+            {/* Thumbnail Gallery */}
             {item.images && item.images.length > 1 && (
-              <div className="flex space-x-2 overflow-x-auto">
+              <div className="flex space-x-2 mt-4 overflow-x-auto">
                 {item.images.map((image, index) => (
                   <button
                     key={index}
                     onClick={() => setCurrentImageIndex(index)}
-                    className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden ${
-                      index === currentImageIndex ? 'ring-2 ring-primary-500' : ''
+                    className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 ${
+                      index === currentImageIndex 
+                        ? 'border-primary' 
+                        : 'border-transparent hover:border-primary-300'
                     }`}
                   >
-                    <img
-                      src={image}
+                    <img 
+                      src={image} 
                       alt={`${item.title} ${index + 1}`}
                       className="w-full h-full object-cover"
                     />
@@ -272,143 +281,134 @@ const ItemDetail = () => {
 
           {/* Item Details */}
           <div className="space-y-6">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">{item.title}</h1>
-              <p className="text-gray-600 text-lg">{item.description}</p>
-            </div>
-
-            {/* Uploader Info */}
-            <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
-              {uploader?.avatar_url ? (
-                <img 
-                  src={uploader.avatar_url} 
-                  alt={uploader.name}
-                  className="h-12 w-12 rounded-full"
-                />
-              ) : (
-                <div className="h-12 w-12 bg-primary-100 rounded-full flex items-center justify-center">
-                  <User className="h-6 w-6 text-primary-600" />
-                </div>
-              )}
-              <div>
-                <p className="font-medium text-gray-900">{uploader?.name || 'Anonymous'}</p>
-                <p className="text-sm text-gray-600">Listed {new Date(item.created_at).toLocaleDateString()}</p>
-              </div>
-            </div>
-
-            {/* Item Specifications */}
-            <div className="grid grid-cols-2 gap-4">
-              {item.category && (
+            <div className="card">
+              <h1 className="text-3xl font-bold text-carob mb-4">{item.title}</h1>
+              <p className="text-matcha text-lg mb-6 leading-relaxed">{item.description}</p>
+              
+              <div className="grid grid-cols-2 gap-4 mb-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                  <p className="text-gray-900">{item.category}</p>
+                  <label className="block text-sm font-medium text-chai mb-1">Category</label>
+                  <span className="badge badge-primary">{item.category}</span>
                 </div>
-              )}
-              {item.type && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
-                  <p className="text-gray-900">{item.type}</p>
+                  <label className="block text-sm font-medium text-chai mb-1">Type</label>
+                  <span className="badge badge-secondary">{item.type || 'Not specified'}</span>
                 </div>
-              )}
-              {item.size && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Size</label>
-                  <p className="text-gray-900">{item.size}</p>
+                  <label className="block text-sm font-medium text-chai mb-1">Size</label>
+                  <span className="badge badge-success">{item.size || 'Not specified'}</span>
                 </div>
-              )}
-              {item.condition && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Condition</label>
-                  <p className="text-gray-900">{item.condition}</p>
-                </div>
-              )}
-            </div>
-
-            {/* Tags */}
-            {item.tags && item.tags.length > 0 && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
-                <div className="flex flex-wrap gap-2">
-                  {item.tags.map((tag, index) => (
-                    <span
-                      key={index}
-                      className="bg-primary-100 text-primary-800 text-sm px-3 py-1 rounded-full"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                  <label className="block text-sm font-medium text-chai mb-1">Condition</label>
+                  <span className="badge badge-warning">{item.condition || 'Not specified'}</span>
                 </div>
               </div>
-            )}
 
-            {/* Status */}
-            <div className="p-4 bg-gray-50 rounded-lg">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-700">Status</span>
-                <span className={`text-sm px-3 py-1 rounded-full ${
-                  item.status === 'available' 
-                    ? 'bg-green-100 text-green-800'
-                    : item.status === 'pending'
-                    ? 'bg-yellow-100 text-yellow-800'
-                    : item.status === 'swapped'
-                    ? 'bg-blue-100 text-blue-800'
-                    : 'bg-gray-100 text-gray-800'
-                }`}>
-                  {item.status}
+              {item.tags && item.tags.length > 0 && (
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-chai mb-2">Tags</label>
+                  <div className="flex flex-wrap gap-2">
+                    {item.tags.map((tag, index) => (
+                      <span key={index} className="badge badge-primary">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="flex items-center space-x-4 text-sm text-chai">
+                <span className="flex items-center space-x-1">
+                  <Calendar className="h-4 w-4" />
+                  <span>Listed {new Date(item.created_at).toLocaleDateString()}</span>
                 </span>
               </div>
             </div>
 
+            {/* Uploader Info */}
+            <div className="card">
+              <h3 className="text-lg font-semibold text-carob mb-4">Listed by</h3>
+              <div className="flex items-center space-x-4">
+                {uploader?.avatar_url ? (
+                  <img 
+                    src={uploader.avatar_url} 
+                    alt={uploader.name}
+                    className="h-12 w-12 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="h-12 w-12 bg-primary-100 rounded-full flex items-center justify-center">
+                    <User className="h-6 w-6 text-primary-600" />
+                  </div>
+                )}
+                <div>
+                  <p className="font-medium text-carob">{uploader?.name || 'Anonymous'}</p>
+                  <p className="text-sm text-matcha">Community Member</p>
+                </div>
+              </div>
+            </div>
+
             {/* Action Buttons */}
-            {item.status === 'available' && (
-              <div className="space-y-3">
-                <button
-                  onClick={handleSwapRequest}
-                  disabled={swapLoading || !user || item.uploader_id === user.id}
-                  className="w-full btn-primary flex items-center justify-center space-x-2"
-                >
-                  {swapLoading ? (
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                  ) : (
-                    <>
-                      <MessageSquare className="h-5 w-5" />
-                      <span>Request Swap</span>
-                    </>
+            {user && item.uploader_id !== user.id && item.status === 'available' && (
+              <div className="card">
+                <h3 className="text-lg font-semibold text-carob mb-4">Get this item</h3>
+                <div className="space-y-3">
+                  <button
+                    onClick={handleSwapRequest}
+                    disabled={swapLoading}
+                    className="btn-primary w-full flex items-center justify-center gap-2"
+                  >
+                    {swapLoading ? (
+                      <div className="loading-spinner h-5 w-5"></div>
+                    ) : (
+                      <>
+                        <MessageSquare className="h-5 w-5" />
+                        <span>Request Swap</span>
+                      </>
+                    )}
+                  </button>
+                  
+                  <button
+                    onClick={handleRedemption}
+                    disabled={redemptionLoading || (userProfile?.points || 0) < 50}
+                    className="btn-outline w-full flex items-center justify-center gap-2"
+                  >
+                    {redemptionLoading ? (
+                      <div className="loading-spinner h-5 w-5"></div>
+                    ) : (
+                      <>
+                        <Heart className="h-5 w-5" />
+                        <span>Redeem with 50 points</span>
+                      </>
+                    )}
+                  </button>
+                  
+                  {userProfile && userProfile.points < 50 && (
+                    <p className="text-sm text-chai text-center">
+                      You need {50 - userProfile.points} more points to redeem this item
+                    </p>
                   )}
-                </button>
-                
-                <button
-                  onClick={handleRedemption}
-                  disabled={redemptionLoading || !user || item.uploader_id === user.id || (userProfile?.points || 0) < 50}
-                  className="w-full btn-secondary flex items-center justify-center space-x-2"
-                >
-                  {redemptionLoading ? (
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                  ) : (
-                    <>
-                      <Heart className="h-5 w-5" />
-                      <span>Redeem with 50 Points</span>
-                    </>
-                  )}
-                </button>
-                
-                {!user && (
-                  <p className="text-sm text-gray-600 text-center">
-                    Please log in to interact with this item
-                  </p>
-                )}
-                
-                {user && item.uploader_id === user.id && (
-                  <p className="text-sm text-gray-600 text-center">
-                    This is your item
-                  </p>
-                )}
-                
-                {user && userProfile?.points < 50 && (
-                  <p className="text-sm text-gray-600 text-center">
-                    You need 50 points to redeem items
-                  </p>
-                )}
+                </div>
+              </div>
+            )}
+
+            {!user && (
+              <div className="card text-center">
+                <h3 className="text-lg font-semibold text-carob mb-4">Want this item?</h3>
+                <p className="text-matcha mb-4">Sign in to request a swap or redeem with points</p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <button
+                    onClick={() => navigate('/login')}
+                    className="btn-primary"
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    onClick={() => navigate('/signup')}
+                    className="btn-outline"
+                  >
+                    Create Account
+                  </button>
+                </div>
               </div>
             )}
           </div>

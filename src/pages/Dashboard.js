@@ -95,18 +95,18 @@ const Dashboard = () => {
     }
   }
 
-  const getSwapStatusColor = (status) => {
+  const getSwapStatusBadge = (status) => {
     switch (status) {
       case 'pending':
-        return 'text-yellow-600 bg-yellow-100'
+        return <span className="badge badge-warning">Pending</span>
       case 'accepted':
-        return 'text-green-600 bg-green-100'
+        return <span className="badge badge-success">Accepted</span>
       case 'declined':
-        return 'text-red-600 bg-red-100'
+        return <span className="badge badge-danger">Declined</span>
       case 'completed':
-        return 'text-blue-600 bg-blue-100'
+        return <span className="badge badge-primary">Completed</span>
       default:
-        return 'text-gray-600 bg-gray-100'
+        return <span className="badge badge-secondary">Unknown</span>
     }
   }
 
@@ -127,8 +127,8 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      <div className="min-h-screen flex items-center justify-center bg-almond">
+        <div className="loading-spinner h-12 w-12"></div>
       </div>
     )
   }
@@ -136,60 +136,70 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-almond py-8 w-full px-4 sm:px-8">
       <ErrorMessage message={error} />
-      <div className="w-full px-0 sm:px-0">
+      <div className="w-full max-w-5xl mx-auto px-0 sm:px-0">
         {/* Header */}
         <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-3xl font-bold text-carob">Dashboard</h1>
             <p className="text-matcha">Manage your profile, items, and swaps</p>
           </div>
-          {/* {userProfile && (userProfile.isAdmin === true || userProfile.isAdmin === 'true') && ( */}
-            <Link to="/admin" className="btn-red-500 mt-4 sm:mt-0">
+          {userProfile?.isAdmin && (
+            <Link to="/admin" className="btn-danger mt-4 sm:mt-0">
               Go to Admin Panel
             </Link>
-          {/* )} */}
+          )}
         </div>
+        
         {/* Profile Card */}
         <div className="card mb-8 w-full">
-          <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
+          <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
             {userProfile?.avatar_url ? (
               <img 
                 src={userProfile.avatar_url} 
                 alt="Profile" 
-                className="h-16 w-16 rounded-full"
+                className="h-20 w-20 rounded-full object-cover shadow-soft"
               />
             ) : (
-              <div className="h-16 w-16 bg-primary-100 rounded-full flex items-center justify-center">
-                <User className="h-8 w-8 text-primary-600" />
+              <div className="h-20 w-20 bg-primary-100 rounded-full flex items-center justify-center shadow-soft">
+                <User className="h-10 w-10 text-primary-600" />
               </div>
             )}
-            <div className="flex-1 w-full">
-              <h2 className="text-xl font-semibold text-carob">
+            <div className="flex-1 w-full text-center md:text-left">
+              <h2 className="text-2xl font-semibold text-carob mb-1">
                 {userProfile?.name || 'User'}
               </h2>
-              <p className="text-matcha">{user?.email}</p>
-              <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 mt-2">
-                <span className="flex items-center space-x-1 text-sm text-matcha">
+              <p className="text-matcha mb-3">{user?.email}</p>
+              <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-2 sm:space-y-0 sm:space-x-6">
+                <span className="flex items-center space-x-2 text-sm text-matcha">
                   <Gift className="h-4 w-4" />
-                  <span>{userProfile?.points || 0} points</span>
+                  <span className="font-medium">{userProfile?.points || 0} points</span>
                 </span>
                 <span className="text-sm text-chai">
                   Member since {new Date(user?.created_at).toLocaleDateString()}
                 </span>
               </div>
             </div>
-            <Link 
-              to="/add-item" 
-              className="btn-primary flex items-center space-x-2 w-full md:w-auto justify-center"
-            >
-              <Plus className="h-4 w-4" />
-              <span>Add Item</span>
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+              <Link 
+                to="/add-item" 
+                className="btn-primary flex items-center justify-center gap-2"
+              >
+                <Plus className="h-4 w-4" />
+                <span>Add Item</span>
+              </Link>
+              <button
+                onClick={handleSignOut}
+                className="btn-outline flex items-center justify-center gap-2"
+              >
+                <LogOut className="h-4 w-4" />
+                <span>Sign Out</span>
+              </button>
+            </div>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="border-b border-gray-200 mb-8">
+        <div className="border-b border-primary-200 mb-8">
           <nav className="-mb-px flex space-x-8">
             {[
               { id: 'profile', label: 'Profile' },
@@ -199,10 +209,10 @@ const Dashboard = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                className={`py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
                   activeTab === tab.id
                     ? 'border-primary text-primary'
-                    : 'border-transparent text-chai hover:text-carob hover:border-pistache'
+                    : 'border-transparent text-chai hover:text-carob hover:border-primary-300'
                 }`}
               >
                 {tab.label}
@@ -216,43 +226,34 @@ const Dashboard = () => {
           {/* Profile Tab */}
           {activeTab === 'profile' && (
             <div className="card">
-              <h3 className="text-lg font-semibold text-carob mb-4">Profile Information</h3>
+              <h3 className="text-xl font-semibold text-carob mb-6">Profile Information</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-chai mb-1">
+                  <label className="block text-sm font-medium text-chai mb-2">
                     Full Name
                   </label>
-                  <p className="text-carob">{userProfile?.name || 'Not set'}</p>
+                  <p className="text-carob font-medium">{userProfile?.name || 'Not set'}</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-chai mb-1">
+                  <label className="block text-sm font-medium text-chai mb-2">
                     Email
                   </label>
-                  <p className="text-carob">{user?.email}</p>
+                  <p className="text-carob font-medium">{user?.email}</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-chai mb-1">
+                  <label className="block text-sm font-medium text-chai mb-2">
                     Points Balance
                   </label>
-                  <p className="text-carob">{userProfile?.points || 0} points</p>
+                  <p className="text-carob font-medium">{userProfile?.points || 0} points</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-chai mb-1">
+                  <label className="block text-sm font-medium text-chai mb-2">
                     Account Type
                   </label>
-                  <p className="text-carob">
+                  <p className="text-carob font-medium">
                     {userProfile?.isAdmin ? 'Admin' : 'Regular User'}
                   </p>
                 </div>
-              </div>
-              <div className="mt-6 pt-6 border-t border-gray-200">
-                <button
-                  onClick={handleSignOut}
-                  className="btn-red-500 flex items-center space-x-2"
-                >
-                  <LogOut className="h-4 w-4" />
-                  <span>Sign Out</span>
-                </button>
               </div>
             </div>
           )}
@@ -261,7 +262,7 @@ const Dashboard = () => {
           {activeTab === 'items' && (
             <div>
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-lg font-semibold text-carob">My Items</h3>
+                <h3 className="text-xl font-semibold text-carob">My Items</h3>
                 <Link to="/add-item" className="btn-primary">
                   Add New Item
                 </Link>
@@ -269,9 +270,9 @@ const Dashboard = () => {
               
               {userItems.length === 0 ? (
                 <div className="card text-center py-12">
-                  <Gift className="h-12 w-12 text-chai mx-auto mb-4" />
+                  <Gift className="h-12 w-12 text-primary-200 mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-carob mb-2">No items yet</h3>
-                  <p className="text-matcha mb-4">Start sharing your clothes with the community!</p>
+                  <p className="text-matcha mb-6">Start sharing your clothes with the community!</p>
                   <Link to="/add-item" className="btn-primary">
                     List Your First Item
                   </Link>
@@ -279,48 +280,53 @@ const Dashboard = () => {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {userItems.map((item) => (
-                    <div key={item.id} className="card">
-                      <div className="aspect-w-1 aspect-h-1 mb-4">
+                    <div key={item.id} className="card card-hover scale-in">
+                      <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-primary-50">
                         {item.images && item.images[0] ? (
                           <img 
                             src={item.images[0]} 
                             alt={item.title}
-                            className="w-full h-48 object-cover rounded-lg"
+                            className="w-full h-full object-cover"
                           />
                         ) : (
-                          <div className="w-full h-48 bg-pistache rounded-lg flex items-center justify-center">
-                            <span className="text-chai">No image</span>
+                          <div className="w-full h-full flex items-center justify-center">
+                            <span className="text-primary-200 text-3xl">👕</span>
                           </div>
                         )}
                       </div>
-                      <h4 className="font-semibold text-carob mb-2">{item.title}</h4>
+                      <h4 className="font-semibold text-carob mb-2 line-clamp-1">{item.title}</h4>
                       <p className="text-sm text-matcha mb-3 line-clamp-2">
                         {item.description}
                       </p>
-                      <div className="flex items-center justify-between">
-                        <span className={`text-xs px-2 py-1 rounded-full ${
+                      <div className="flex items-center justify-between mb-3">
+                        <span className={`badge ${
                           item.status === 'available' 
-                            ? 'bg-matcha text-vanilla'
+                            ? 'badge-success'
                             : item.status === 'pending'
-                            ? 'bg-yellow-100 text-yellow-800'
-                            : 'bg-pistache text-carob'
+                            ? 'badge-warning'
+                            : 'badge-secondary'
                         }`}>
                           {item.status}
                         </span>
-                        <div className="flex space-x-2">
-                          <Link 
-                            to={`/item/${item.id}`}
-                            className="text-primary hover:text-carob p-1"
-                          >
-                            <Eye className="h-4 w-4" />
-                          </Link>
-                          <button
-                            onClick={() => handleDeleteItem(item.id)}
-                            className="text-chai hover:text-carob p-1"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
-                        </div>
+                        {!item.approved && (
+                          <span className="badge badge-warning">Pending Approval</span>
+                        )}
+                      </div>
+                      <div className="flex space-x-2">
+                        <Link 
+                          to={`/item/${item.id}`}
+                          className="btn-ghost flex-1 flex items-center justify-center gap-1"
+                        >
+                          <Eye className="h-4 w-4" />
+                          <span>View</span>
+                        </Link>
+                        <button
+                          onClick={() => handleDeleteItem(item.id)}
+                          className="btn-ghost text-red-600 hover:text-red-700 flex items-center justify-center gap-1"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                          <span>Delete</span>
+                        </button>
                       </div>
                     </div>
                   ))}
@@ -332,18 +338,18 @@ const Dashboard = () => {
           {/* Swaps Tab */}
           {activeTab === 'swaps' && (
             <div>
-              <h3 className="text-lg font-semibold text-carob mb-6">Swap History</h3>
+              <h3 className="text-xl font-semibold text-carob mb-6">Swap History</h3>
               
               {swaps.length === 0 ? (
                 <div className="card text-center py-12">
-                  <Clock className="h-12 w-12 text-chai mx-auto mb-4" />
+                  <Clock className="h-12 w-12 text-primary-200 mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-carob mb-2">No swaps yet</h3>
                   <p className="text-matcha">Start browsing items to make your first swap!</p>
                 </div>
               ) : (
                 <div className="space-y-4">
                   {swaps.map((swap) => (
-                    <div key={swap.id} className="card">
+                    <div key={swap.id} className="card card-hover scale-in">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-4">
                           <div className="flex-shrink-0">
@@ -351,11 +357,11 @@ const Dashboard = () => {
                               <img 
                                 src={swap.items.images[0]} 
                                 alt={swap.items.title}
-                                className="h-12 w-12 object-cover rounded-lg"
+                                className="h-16 w-16 object-cover rounded-lg"
                               />
                             ) : (
-                              <div className="h-12 w-12 bg-pistache rounded-lg flex items-center justify-center">
-                                <span className="text-chai text-xs">No img</span>
+                              <div className="h-16 w-16 bg-primary-50 rounded-lg flex items-center justify-center">
+                                <span className="text-primary-200 text-2xl">👕</span>
                               </div>
                             )}
                           </div>
@@ -375,10 +381,7 @@ const Dashboard = () => {
                           </div>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <span className={`flex items-center space-x-1 text-xs px-2 py-1 rounded-full ${getSwapStatusColor(swap.status)}`}>
-                            {getSwapStatusIcon(swap.status)}
-                            <span className="capitalize">{swap.status}</span>
-                          </span>
+                          {getSwapStatusBadge(swap.status)}
                         </div>
                       </div>
                     </div>

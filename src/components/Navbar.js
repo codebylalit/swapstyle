@@ -24,7 +24,7 @@ const Navbar = () => {
       <div className="max-w-6xl mx-auto px-6 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center">
+          <div className="flex items-center">c
             <Link to="/" className="flex-shrink-0 flex items-center">
               <h1 className="text-2xl font-bold text-primary-600">WearShare</h1>
             </Link>

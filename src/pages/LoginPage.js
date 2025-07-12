@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import toast from 'react-hot-toast';
 import ErrorMessage from '../components/ErrorMessage';
 
@@ -49,67 +49,107 @@ const LoginPage = () => {
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-almond">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+        <div className="loading-spinner h-12 w-12"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-almond">
-      <div className="w-full max-w-md bg-vanilla rounded-2xl shadow-lg p-8 flex flex-col items-center">
-        <h2 className="text-3xl font-bold text-carob mb-2">Sign in to your account</h2>
-        <p className="text-matcha mb-6">Or <Link to="/signup" className="text-primary-600 hover:underline">create a new account</Link></p>
-        <ErrorMessage message={error} />
-        <form className="w-full" onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-chai font-medium mb-1">Email address</label>
-            <div className="relative">
-              <input
-                id="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg border border-chai focus:outline-none focus:ring-2 focus:ring-primary-500"
-                placeholder="Enter your email"
-              />
-              <Mail className="absolute right-3 top-3 h-5 w-5 text-chai" />
-            </div>
-          </div>
+    <div className="min-h-screen flex items-center justify-center bg-almond py-8 px-4">
+      <div className="w-full max-w-md">
+        {/* Back Button */}
+        <div className="mb-6">
+          <Link to="/" className="btn-ghost flex items-center gap-2">
+            <ArrowLeft className="h-4 w-4" />
+            <span>Back to Home</span>
+          </Link>
+        </div>
+
+        {/* Login Card */}
+        <div className="card text-center">
           <div className="mb-6">
-            <label htmlFor="password" className="block text-chai font-medium mb-1">Password</label>
-            <div className="relative">
-              <input
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                autoComplete="current-password"
-                required
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg border border-chai focus:outline-none focus:ring-2 focus:ring-primary-500"
-                placeholder="Enter your password"
-              />
-              <button type="button" onClick={() => setShowPassword(v => !v)} className="absolute right-3 top-3 text-chai">
-                {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-              </button>
-              <Lock className="absolute left-3 top-3 h-5 w-5 text-chai" />
-            </div>
+            <h2 className="text-3xl font-bold text-carob mb-2">Welcome Back</h2>
+            <p className="text-matcha">
+              Don't have an account?{' '}
+              <Link to="/signup" className="text-primary hover:underline font-medium">
+                Create one here
+              </Link>
+            </p>
           </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full btn-primary py-3 text-lg font-semibold rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? (
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mx-auto"></div>
-            ) : (
-              'Sign in'
-            )}
-          </button>
-        </form>
-        <div className="text-center mt-6 w-full">
-          <Link to="/" className="text-sm text-chai hover:text-carob">← Back to home</Link>
+
+          <ErrorMessage message={error} />
+          
+          <form className="w-full space-y-6" onSubmit={handleSubmit}>
+            <div>
+              <label htmlFor="email" className="block text-chai font-medium mb-2 text-left">
+                Email address
+              </label>
+              <div className="relative">
+                <input
+                  id="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  className="input-field pl-12"
+                  placeholder="Enter your email"
+                />
+                <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-primary-400" />
+              </div>
+            </div>
+            
+            <div>
+              <label htmlFor="password" className="block text-chai font-medium mb-2 text-left">
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  autoComplete="current-password"
+                  required
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  className="input-field pl-12 pr-12"
+                  placeholder="Enter your password"
+                />
+                <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-primary-400" />
+                <button 
+                  type="button" 
+                  onClick={() => setShowPassword(v => !v)} 
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-chai hover:text-primary-600"
+                >
+                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </button>
+              </div>
+            </div>
+            
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn-primary w-full py-4 text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <div className="loading-spinner h-5 w-5 mx-auto"></div>
+              ) : (
+                'Sign In'
+              )}
+            </button>
+          </form>
+
+          <div className="mt-8 pt-6 border-t border-primary-200">
+            <p className="text-sm text-chai">
+              By signing in, you agree to our{' '}
+              <Link to="/" className="text-primary hover:underline">
+                Terms of Service
+              </Link>{' '}
+              and{' '}
+              <Link to="/" className="text-primary hover:underline">
+                Privacy Policy
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>
