@@ -20,7 +20,7 @@ const Navbar = () => {
 
 
   return (
-    <nav className="mt-6 w-full px-4 sm:px-8">
+    <nav className="mt-6 w-full px-4 sm:px-8 bg-transparent">
       <div className="max-w-6xl mx-auto px-6 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -32,14 +32,15 @@ const Navbar = () => {
 
           {/* Desktop Navigation - Centered */}
           <div className="hidden md:flex items-center justify-center flex-1 space-x-8">
-            <Link 
+         
+            {user && userProfile && (
+              <>
+                 <Link 
               to="/" 
               className="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
             >
               Home
             </Link>
-            {user && userProfile && (
-              <>
                 <Link 
                   to="/add-item" 
                   className="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"

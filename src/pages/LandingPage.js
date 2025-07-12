@@ -111,8 +111,6 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-almond via-vanilla to-almond">
-      <Navbar />
-      
       {/* Hero Section */}
       <section className="relative w-full flex flex-col items-center justify-center py-24 px-4 sm:px-8">
         {/* Background Pattern */}

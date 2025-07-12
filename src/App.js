@@ -28,7 +28,7 @@ useEffect(() => {
     
     <AuthProvider>
       <Router>
-        <div className="min-h-screen bg-almond">
+        <div className="min-h-screen">
           <Navbar />
           <main>
             <Routes>
