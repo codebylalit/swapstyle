@@ -1,4 +1,8 @@
-admin acess:
+vide link: https://youtu.be/ooJjyWkK3gk
+
+live demo: https://wearshare.vercel.app/
+
+admin access:
 email : lalitgaming55@gmail.com
 pass : lalit123
 
