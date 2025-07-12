@@ -130,7 +130,7 @@ const Navbar = () => {
       </div>
 
       {/* Search Bar */}
-      <div className="bg-primary-50 mt-6">
+      {/* <div className="bg-primary-50 mt-6">
         <div className="max-w-6xl mx-auto px-6 sm:px-6 lg:px-8 py-4">
           <form onSubmit={handleSearch} className="w-full">
             <div className="relative">
@@ -150,7 +150,7 @@ const Navbar = () => {
             </div>
           </form>
         </div>
-      </div>
+      </div> */}
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
