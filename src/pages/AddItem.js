@@ -130,7 +130,7 @@ const AddItem = () => {
             tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
             images: images,
             uploader_id: user.id,
-            status: 'pending',
+            status: 'available',
             approved: false // Requires admin approval
           }
         ])
