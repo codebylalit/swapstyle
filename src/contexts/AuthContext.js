@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { supabase, TABLES } from '../lib/supabase'
+import toast from 'react-hot-toast'
 
 const AuthContext = createContext({})
 
@@ -186,11 +187,17 @@ export const AuthProvider = ({ children }) => {
       const { error } = await supabase.auth.signOut()
       setUser(null)
       setUserProfile(null)
-      if (error) throw error
+      if (error) {
+        toast.error('Error signing out. Forcing logout.')
+      } else {
+        toast.success('Signed out successfully.')
+      }
     } catch (error) {
       setUser(null)
       setUserProfile(null)
-      alert('Error signing out. Forcing logout.')
+      toast.error('Error signing out. Forcing logout.')
+    } finally {
+      window.location.href = '/login'
     }
   }
 

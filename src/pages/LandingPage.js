@@ -183,21 +183,6 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Features Section */}
-        <div className="w-full max-w-6xl mx-auto mb-20">
-          <h2 className="text-4xl font-bold text-carob text-center mb-12">Why Choose WearShare?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
-              <div key={index} className="card card-hover text-center p-8 slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                <div className="mb-6 flex justify-center">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-semibold text-carob mb-4">{feature.title}</h3>
-                <p className="text-matcha text-sm leading-relaxed">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
 
         {/* Category Grid */}
         <div className="w-full max-w-6xl mx-auto mb-20">
@@ -270,6 +255,21 @@ export default function LandingPage() {
           )}
         </div>
 
+        {/* Features Section */}
+        <div className="w-full max-w-6xl mx-auto mb-20">
+          <h2 className="text-4xl font-bold text-carob text-center mb-12">Why Choose WearShare?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {features.map((feature, index) => (
+              <div key={index} className="card card-hover text-center p-8 slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                <div className="mb-6 flex justify-center">
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-semibold text-carob mb-4">{feature.title}</h3>
+                <p className="text-matcha text-sm leading-relaxed">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
         {/* Testimonials Section */}
         <div className="w-full max-w-6xl mx-auto mb-20">
           <h2 className="text-4xl font-bold text-carob text-center mb-12">What Our Community Says</h2>
