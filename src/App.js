@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from './contexts/AuthContext'
-// import Navbar from './components/Navbar' // Remove global navbar
+import Navbar from './components/Navbar'
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
@@ -29,7 +29,7 @@ useEffect(() => {
     <AuthProvider>
       <Router>
         <div className="min-h-screen bg-almond">
-          {/* <Navbar /> Removed from global layout */}
+          <Navbar />
           <main>
             <Routes>
               <Route path="/" element={<LandingPage />} />
