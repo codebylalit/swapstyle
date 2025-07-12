@@ -206,8 +206,8 @@ export default function LandingPage() {
             {categories.map((cat, i) => (
               <Link
                 key={i}
-                to={`/browse?category=${encodeURIComponent(cat.name)}`}
-                className="card card-hover p-8 flex flex-col items-center justify-center text-center group transition-all duration-300 hover:scale-105"
+                to="/browse" 
+                className="card card-hover p-8 flex flex-col items-center justify-center cursor-pointer text-center group transition-all duration-300 hover:scale-105"
               >
                 <div className="text-primary mb-4 group-hover:scale-110 transition-transform duration-200">
                   {cat.icon}
