@@ -219,55 +219,8 @@ export default function LandingPage() {
             ))}
           </div>
         </div>
-
-        {/* Call to Action Section */}
-        <div className="w-full max-w-4xl mx-auto mb-20">
-          <div className="card text-center py-16 px-8">
-            <h2 className="text-3xl font-bold text-carob mb-6">Ready to Start Sharing?</h2>
-            <p className="text-matcha text-lg mb-8 max-w-2xl mx-auto">
-              Join thousands of members who are making fashion sustainable. List your first item and start building your sustainable wardrobe today!
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link 
-                to="/add-item" 
-                className="btn-primary text-lg px-8 py-4 flex items-center justify-center gap-2 group"
-              >
-                <Plus className="h-5 w-5" />
-                <span>List an Item</span>
-              </Link>
-              <Link 
-                to="/browse" 
-                className="btn-outline text-lg px-8 py-4"
-              >
-                Browse Items
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* Testimonials Section */}
-        <div className="w-full max-w-6xl mx-auto mb-20">
-          <h2 className="text-4xl font-bold text-carob text-center mb-12">What Our Community Says</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="card card-hover p-8 slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                <div className="flex items-center mb-6">
-                  <div className="h-14 w-14 bg-primary-100 rounded-full flex items-center justify-center mr-4">
-                    <span className="text-primary font-semibold text-lg">{testimonial.avatar}</span>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-carob text-lg">{testimonial.name}</h4>
-                    <p className="text-sm text-matcha">{testimonial.role}</p>
-                  </div>
-                </div>
-                <p className="text-matcha italic text-base leading-relaxed">"{testimonial.content}"</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Featured Products Grid */}
-        <div className="w-full max-w-6xl mx-auto mb-20">
+ {/* Featured Products Grid */}
+ <div className="w-full max-w-6xl mx-auto mb-20">
           <h2 className="text-4xl font-bold text-carob text-center mb-12">Featured Items</h2>
           {itemsLoading ? (
             <div className="flex justify-center py-16">
@@ -318,6 +271,29 @@ export default function LandingPage() {
             </div>
           )}
         </div>
+
+        {/* Testimonials Section */}
+        <div className="w-full max-w-6xl mx-auto mb-20">
+          <h2 className="text-4xl font-bold text-carob text-center mb-12">What Our Community Says</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <div key={index} className="card card-hover p-8 slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                <div className="flex items-center mb-6">
+                  <div className="h-14 w-14 bg-primary-100 rounded-full flex items-center justify-center mr-4">
+                    <span className="text-primary font-semibold text-lg">{testimonial.avatar}</span>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-carob text-lg">{testimonial.name}</h4>
+                    <p className="text-sm text-matcha">{testimonial.role}</p>
+                  </div>
+                </div>
+                <p className="text-matcha italic text-base leading-relaxed">"{testimonial.content}"</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+       
       </section>
 
       {/* Footer */}
