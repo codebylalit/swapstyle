@@ -14,6 +14,8 @@ import ProtectedRoute from './components/ProtectedRoute'
 import { supabase } from './lib/supabase';
 import AdminPanel from './pages/AdminPanel'
 import AdminRoute from './components/AdminRoute'
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
 
 function App() {
   
@@ -63,6 +65,8 @@ useEffect(() => {
                   </AdminRoute>
                 } 
               />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
             </Routes>
           </main>
           <Toaster 

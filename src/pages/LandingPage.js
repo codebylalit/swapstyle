@@ -114,7 +114,7 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="relative w-full flex flex-col items-center justify-center py-24 px-4 sm:px-8">
         {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0 opacity-5 pointer-events-none">
           <div className="absolute top-20 left-10 w-32 h-32 bg-primary rounded-full"></div>
           <div className="absolute top-40 right-20 w-24 h-24 bg-secondary rounded-full"></div>
           <div className="absolute bottom-20 left-20 w-16 h-16 bg-primary rounded-full"></div>
@@ -290,6 +290,30 @@ export default function LandingPage() {
           </div>
         </div>
 
+        {/* Contact Form Section */}
+        <div className="w-full max-w-xl mx-auto mb-20">
+          <form className="bg-chai/60 rounded-2xl shadow-lg p-8 flex flex-col gap-6">
+            <h2 className="text-2xl font-bold text-carob mb-2">Contact Us</h2>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="contact-name" className="text-chai text-base font-medium">Name</label>
+              <input id="contact-name" name="name" type="text" className="rounded-lg border-none bg-white px-4 py-3 text-carob focus:ring-2 focus:ring-matcha placeholder-chai/60" placeholder="Name" />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="contact-email" className="text-chai text-base font-medium">Email</label>
+              <input id="contact-email" name="email" type="email" className="rounded-lg border-none bg-white px-4 py-3 text-carob focus:ring-2 focus:ring-matcha placeholder-chai/60" placeholder="Email" />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="contact-subject" className="text-chai text-base font-medium">Subject</label>
+              <input id="contact-subject" name="subject" type="text" className="rounded-lg border-none bg-white px-4 py-3 text-carob focus:ring-2 focus:ring-matcha placeholder-chai/60" placeholder="Subject" />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="contact-message" className="text-chai text-base font-medium">Message</label>
+              <textarea id="contact-message" name="message" rows={4} className="rounded-lg border-none bg-white px-4 py-3 text-carob focus:ring-2 focus:ring-matcha placeholder-chai/60 resize-none" placeholder="Message" />
+            </div>
+            <button type="submit" className="mt-2 bg-matcha text-vanilla font-semibold text-lg py-3 rounded-lg shadow-md hover:bg-matcha/90 transition-colors">Send Message</button>
+          </form>
+        </div>
+
        
       </section>
 
@@ -324,7 +348,6 @@ export default function LandingPage() {
                 <li><Link to="/browse" className="text-vanilla/80 hover:text-vanilla transition-colors text-lg">Browse Items</Link></li>
                 <li><Link to="/add-item" className="text-vanilla/80 hover:text-vanilla transition-colors text-lg">List an Item</Link></li>
                 <li><Link to="/dashboard" className="text-vanilla/80 hover:text-vanilla transition-colors text-lg">Dashboard</Link></li>
-                <li><Link to="/login" className="text-vanilla/80 hover:text-vanilla transition-colors text-lg">Sign In</Link></li>
               </ul>
             </div>
 
@@ -351,12 +374,11 @@ export default function LandingPage() {
           {/* Bottom Bar */}
           <div className="border-t border-vanilla/20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
             <p className="text-vanilla/60 text-base">
-              © 2024 WearShare. All rights reserved.
+              © 2025 WearShare. All rights reserved.
             </p>
             <div className="flex space-x-8 mt-4 md:mt-0">
-              <a href="#" className="text-vanilla/60 hover:text-vanilla text-base transition-colors">Privacy Policy</a>
-              <a href="#" className="text-vanilla/60 hover:text-vanilla text-base transition-colors">Terms of Service</a>
-              <a href="#" className="text-vanilla/60 hover:text-vanilla text-base transition-colors">Cookie Policy</a>
+              <Link to="/privacy-policy" className="text-vanilla/60 hover:text-vanilla text-base transition-colors">Privacy Policy</Link>
+              <Link to="/terms-of-service" className="text-vanilla/60 hover:text-vanilla text-base transition-colors">Terms of Service</Link>
             </div>
           </div>
         </div>
