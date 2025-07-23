@@ -17,6 +17,7 @@ ReWear – Community Clothing Exchange
 The fashion industry is one of the largest contributors to environmental pollution and waste. Fast fashion leads to excessive clothing production, with millions of garments ending up in landfills each year. Many people have clothes they no longer wear but are still in good condition, while others are looking for affordable, sustainable fashion options.
 
 **WearShare** addresses this problem by creating a community-driven platform where users can:
+
 - Share their unused clothing items with others
 - Swap items instead of buying new ones
 - Earn points for sustainable behavior
@@ -45,17 +46,24 @@ The fashion industry is one of the largest contributors to environmental polluti
 ## Quick Start
 
 1. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 2. **Set up Supabase**
+
    - Create a new Supabase project
    - Run `database-setup.sql` in the SQL editor
    - Get your project URL and anon key
+   - Configure email templates in Supabase Dashboard:
+     - Go to Authentication > Email Templates
+     - Update the "Confirm signup" template to use your deployed site URL
+     - Set Site URL in Authentication > URL Configuration to your deployed site URL
 
 3. **Environment Variables**
    Create `.env` file:
+
    ```env
    REACT_APP_SUPABASE_URL=your_supabase_project_url
    REACT_APP_SUPABASE_ANON_KEY=your_supabase_anon_key

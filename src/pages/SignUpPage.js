@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { Mail, Lock, Eye, EyeOff, User, ArrowLeft } from 'lucide-react';
-import toast from 'react-hot-toast';
-import ErrorMessage from '../components/ErrorMessage';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { Mail, Lock, Eye, EyeOff, User, ArrowLeft } from "lucide-react";
+import toast from "react-hot-toast";
+import ErrorMessage from "../components/ErrorMessage";
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -22,50 +22,59 @@ const SignUpPage = () => {
 
   useEffect(() => {
     if (!authLoading && user) {
-      navigate('/dashboard');
+      navigate("/dashboard");
     }
   }, [user, authLoading, navigate]);
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-    
+
     // Validation
-    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
-      toast.error('Please fill in all fields');
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
+      toast.error("Please fill in all fields");
       return;
     }
-    
+
     if (formData.password !== formData.confirmPassword) {
-      toast.error('Passwords do not match');
+      toast.error("Passwords do not match");
       return;
     }
-    
+
     if (formData.password.length < 6) {
-      toast.error('Password must be at least 6 characters long');
+      toast.error("Password must be at least 6 characters long");
       return;
     }
 
     setLoading(true);
     try {
-      const { error } = await signUp(formData.email, formData.password, formData.name);
+      const { error } = await signUp(
+        formData.email,
+        formData.password,
+        formData.name
+      );
       if (error) {
-        setError(error.message || 'Sign up failed');
+        setError(error.message || "Sign up failed");
         toast.error(error.message);
       } else {
-        toast.success('Account created successfully! Welcome to WearShare!');
-        navigate('/dashboard');
+        toast.success("Account created successfully! Welcome to WearShare!");
+        navigate("/dashboard");
       }
     } catch (err) {
-      setError('An unexpected error occurred: ' + (err.message || err));
-      toast.error('An unexpected error occurred');
+      setError("An unexpected error occurred: " + (err.message || err));
+      toast.error("An unexpected error occurred");
     } finally {
       setLoading(false);
     }
@@ -93,20 +102,28 @@ const SignUpPage = () => {
         {/* Sign Up Card */}
         <div className="card text-center p-10">
           <div className="mb-8">
-            <h2 className="text-4xl text-carob font-bold mb-3">Join WearShare</h2>
+            <h2 className="text-4xl text-carob font-bold mb-3">
+              Join WearShare
+            </h2>
             <p className="text-matcha text-lg">
-              Already have an account?{' '}
-              <Link to="/login" className="text-primary hover:underline font-semibold">
+              Already have an account?{" "}
+              <Link
+                to="/login"
+                className="text-primary hover:underline font-semibold"
+              >
                 Sign in here
               </Link>
             </p>
           </div>
 
           <ErrorMessage message={error} />
-          
+
           <form className="w-full space-y-8" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="name" className="block text-chai font-semibold mb-2 text-left text-base">
+              <label
+                htmlFor="name"
+                className="block text-chai font-semibold mb-2 text-left text-base"
+              >
                 Full Name
               </label>
               <div className="relative">
@@ -124,9 +141,12 @@ const SignUpPage = () => {
                 <User className="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-primary-400" />
               </div>
             </div>
-            
+
             <div>
-              <label htmlFor="email" className="block text-chai font-semibold mb-2 text-left text-base">
+              <label
+                htmlFor="email"
+                className="block text-chai font-semibold mb-2 text-left text-base"
+              >
                 Email address
               </label>
               <div className="relative">
@@ -144,16 +164,19 @@ const SignUpPage = () => {
                 <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-primary-400" />
               </div>
             </div>
-            
+
             <div>
-              <label htmlFor="password" className="block text-chai font-semibold mb-2 text-left text-base">
+              <label
+                htmlFor="password"
+                className="block text-chai font-semibold mb-2 text-left text-base"
+              >
                 Password
               </label>
               <div className="relative">
                 <input
                   id="password"
                   name="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   autoComplete="new-password"
                   required
                   value={formData.password}
@@ -162,28 +185,35 @@ const SignUpPage = () => {
                   placeholder="Create a password"
                 />
                 <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-primary-400" />
-                <button 
-                  type="button" 
-                  onClick={() => setShowPassword(v => !v)} 
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
                   className="absolute right-4 top-1/2 transform -translate-y-1/2 text-chai hover:text-primary-600"
                 >
-                  {showPassword ? <EyeOff className="h-6 w-6" /> : <Eye className="h-6 w-6" />}
+                  {showPassword ? (
+                    <EyeOff className="h-6 w-6" />
+                  ) : (
+                    <Eye className="h-6 w-6" />
+                  )}
                 </button>
               </div>
               <p className="text-sm text-chai mt-2 text-left">
                 Must be at least 6 characters long
               </p>
             </div>
-            
+
             <div>
-              <label htmlFor="confirmPassword" className="block text-chai font-semibold mb-2 text-left text-base">
+              <label
+                htmlFor="confirmPassword"
+                className="block text-chai font-semibold mb-2 text-left text-base"
+              >
                 Confirm Password
               </label>
               <div className="relative">
                 <input
                   id="confirmPassword"
                   name="confirmPassword"
-                  type={showConfirmPassword ? 'text' : 'password'}
+                  type={showConfirmPassword ? "text" : "password"}
                   autoComplete="new-password"
                   required
                   value={formData.confirmPassword}
@@ -192,16 +222,20 @@ const SignUpPage = () => {
                   placeholder="Confirm your password"
                 />
                 <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-primary-400" />
-                <button 
-                  type="button" 
-                  onClick={() => setShowConfirmPassword(v => !v)} 
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword((v) => !v)}
                   className="absolute right-4 top-1/2 transform -translate-y-1/2 text-chai hover:text-primary-600"
                 >
-                  {showConfirmPassword ? <EyeOff className="h-6 w-6" /> : <Eye className="h-6 w-6" />}
+                  {showConfirmPassword ? (
+                    <EyeOff className="h-6 w-6" />
+                  ) : (
+                    <Eye className="h-6 w-6" />
+                  )}
                 </button>
               </div>
             </div>
-            
+
             <button
               type="submit"
               disabled={loading}
@@ -210,19 +244,25 @@ const SignUpPage = () => {
               {loading ? (
                 <div className="loading-spinner h-6 w-6 mx-auto"></div>
               ) : (
-                'Create Account'
+                "Create Account"
               )}
             </button>
           </form>
 
           <div className="mt-10 pt-8 border-t border-primary-200">
             <p className="text-base text-chai">
-              By creating an account, you agree to our{' '}
-              <Link to="/" className="text-primary hover:underline">
+              By creating an account, you agree to our{" "}
+              <Link
+                to="/terms-of-service"
+                className="text-primary hover:underline"
+              >
                 Terms of Service
-              </Link>{' '}
-              and{' '}
-              <Link to="/" className="text-primary hover:underline">
+              </Link>{" "}
+              and{" "}
+              <Link
+                to="/privacy-policy"
+                className="text-primary hover:underline"
+              >
                 Privacy Policy
               </Link>
             </p>
@@ -233,4 +273,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage; 
+export default SignUpPage;
