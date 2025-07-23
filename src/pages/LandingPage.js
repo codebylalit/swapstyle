@@ -490,19 +490,6 @@ export default function LandingPage() {
               </Link>
             </li>
           </ul>
-
-          {/* Right: Social Icons */}
-          <div className="flex gap-4 items-center justify-center">
-            <a href="#" aria-label="Instagram" className="hover:text-vanilla">
-              <Instagram className="h-5 w-5" />
-            </a>
-            <a href="#" aria-label="Twitter" className="hover:text-vanilla">
-              <Twitter className="h-5 w-5" />
-            </a>
-            <a href="#" aria-label="Facebook" className="hover:text-vanilla">
-              <Facebook className="h-5 w-5" />
-            </a>
-          </div>
         </div>
         <div className="text-center text-vanilla/50 py-4 text-xs border-t border-vanilla/10 mt-4">
           © 2025 WearShare. All rights reserved.
