@@ -380,8 +380,17 @@ export default function LandingPage() {
 
         {/* Contact Form Section */}
         <div className="w-full max-w-xl mx-auto mb-20">
-          <form className="bg-chai/60 rounded-2xl shadow-lg p-8 flex flex-col gap-6">
+          <form
+            action="https://formspree.io/f/manbeezw"
+            method="POST"
+            className="bg-chai/60 rounded-2xl shadow-lg p-8 flex flex-col gap-6"
+          >
             <h2 className="text-2xl font-bold text-carob mb-2">Contact Us</h2>
+            <input
+              type="hidden"
+              name="_subject"
+              value="New message from WearShare contact form"
+            />
             <div className="flex flex-col gap-1">
               <label
                 htmlFor="contact-name"
@@ -395,6 +404,7 @@ export default function LandingPage() {
                 type="text"
                 className="rounded-lg border-none bg-white px-4 py-3 text-carob focus:ring-2 focus:ring-matcha placeholder-chai/60"
                 placeholder="Name"
+                required
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -410,6 +420,7 @@ export default function LandingPage() {
                 type="email"
                 className="rounded-lg border-none bg-white px-4 py-3 text-carob focus:ring-2 focus:ring-matcha placeholder-chai/60"
                 placeholder="Email"
+                required
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -425,6 +436,7 @@ export default function LandingPage() {
                 type="text"
                 className="rounded-lg border-none bg-white px-4 py-3 text-carob focus:ring-2 focus:ring-matcha placeholder-chai/60"
                 placeholder="Subject"
+                required
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -440,6 +452,7 @@ export default function LandingPage() {
                 rows={4}
                 className="rounded-lg border-none bg-white px-4 py-3 text-carob focus:ring-2 focus:ring-matcha placeholder-chai/60 resize-none"
                 placeholder="Message"
+                required
               />
             </div>
             <button
