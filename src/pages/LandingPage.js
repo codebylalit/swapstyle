@@ -382,93 +382,99 @@ export default function LandingPage() {
         {/* Contact Form Section */}
         <div className="w-full max-w-xl mx-auto mb-20">
           {formSubmitted ? (
-            <div className="bg-chai/60 rounded-2xl shadow-lg p-8 flex flex-col items-center">
-              <h2 className="text-2xl font-bold text-carob mb-4">Thank you!</h2>
-              <p className="text-matcha text-lg text-center mb-2">Your message has been sent. We'll get back to you soon.</p>
+            <div className="bg-chai/60 rounded-2xl shadow-lg p-8 flex flex-col items-center border border-matcha/30">
+              <h2 className="text-3xl font-bold text-carob mb-4">Thank you!</h2>
+              <p className="text-matcha text-lg text-center mb-2">
+                Your message has been sent. We'll get back to you soon.
+              </p>
             </div>
           ) : (
             <form
               action="https://formspree.io/f/manbeezw"
               method="POST"
-              className="bg-chai/60 rounded-2xl shadow-lg p-8 flex flex-col gap-6"
+              className="relative bg-white rounded-2xl shadow-2xl border border-matcha/30 p-0 overflow-hidden"
               onSubmit={() => setFormSubmitted(true)}
             >
-              <h2 className="text-2xl font-bold text-carob mb-2">Contact Us</h2>
-              <input
-                type="hidden"
-                name="_subject"
-                value="New message from WearShare contact form"
-              />
-              <div className="flex flex-col gap-1">
-                <label
-                  htmlFor="contact-name"
-                  className="text-chai text-base font-medium"
-                >
-                  Name
-                </label>
+              {/* Accent Bar */}
+              <div className="h-2 w-full bg-matcha mb-0" />
+              <div className="p-10 flex flex-col gap-7">
+                <h2 className="text-3xl font-extrabold text-carob mb-2 text-center">Contact Us</h2>
                 <input
-                  id="contact-name"
-                  name="name"
-                  type="text"
-                  className="rounded-lg border-none bg-white px-4 py-3 text-carob focus:ring-2 focus:ring-matcha placeholder-chai/60"
-                  placeholder="Name"
-                  required
+                  type="hidden"
+                  name="_subject"
+                  value="New message from WearShare contact form"
                 />
-              </div>
-              <div className="flex flex-col gap-1">
-                <label
-                  htmlFor="contact-email"
-                  className="text-chai text-base font-medium"
+                <div className="flex flex-col gap-2">
+                  <label
+                    htmlFor="contact-name"
+                    className="text-chai text-lg font-semibold"
+                  >
+                    Name
+                  </label>
+                  <input
+                    id="contact-name"
+                    name="name"
+                    type="text"
+                    className="rounded-lg border border-chai/20 bg-white px-5 py-3 text-carob focus:ring-2 focus:ring-matcha focus:border-matcha placeholder-chai/60 text-base transition-all"
+                    placeholder="Name"
+                    required
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label
+                    htmlFor="contact-email"
+                    className="text-chai text-lg font-semibold"
+                  >
+                    Email
+                  </label>
+                  <input
+                    id="contact-email"
+                    name="email"
+                    type="email"
+                    className="rounded-lg border border-chai/20 bg-white px-5 py-3 text-carob focus:ring-2 focus:ring-matcha focus:border-matcha placeholder-chai/60 text-base transition-all"
+                    placeholder="Email"
+                    required
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label
+                    htmlFor="contact-subject"
+                    className="text-chai text-lg font-semibold"
+                  >
+                    Subject
+                  </label>
+                  <input
+                    id="contact-subject"
+                    name="subject"
+                    type="text"
+                    className="rounded-lg border border-chai/20 bg-white px-5 py-3 text-carob focus:ring-2 focus:ring-matcha focus:border-matcha placeholder-chai/60 text-base transition-all"
+                    placeholder="Subject"
+                    required
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label
+                    htmlFor="contact-message"
+                    className="text-chai text-lg font-semibold"
+                  >
+                    Message
+                  </label>
+                  <textarea
+                    id="contact-message"
+                    name="message"
+                    rows={4}
+                    className="rounded-lg border border-chai/20 bg-white px-5 py-3 text-carob focus:ring-2 focus:ring-matcha focus:border-matcha placeholder-chai/60 text-base transition-all resize-none"
+                    placeholder="Message"
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full mt-2 bg-matcha text-vanilla font-bold text-lg py-3 rounded-lg shadow-md hover:bg-matcha/90 transition-colors focus:ring-2 focus:ring-matcha focus:outline-none"
                 >
-                  Email
-                </label>
-                <input
-                  id="contact-email"
-                  name="email"
-                  type="email"
-                  className="rounded-lg border-none bg-white px-4 py-3 text-carob focus:ring-2 focus:ring-matcha placeholder-chai/60"
-                  placeholder="Email"
-                  required
-                />
+                  Send Message
+                </button>
               </div>
-              <div className="flex flex-col gap-1">
-                <label
-                  htmlFor="contact-subject"
-                  className="text-chai text-base font-medium"
-                >
-                  Subject
-                </label>
-                <input
-                  id="contact-subject"
-                  name="subject"
-                  type="text"
-                  className="rounded-lg border-none bg-white px-4 py-3 text-carob focus:ring-2 focus:ring-matcha placeholder-chai/60"
-                  placeholder="Subject"
-                  required
-                />
-              </div>
-              <div className="flex flex-col gap-1">
-                <label
-                  htmlFor="contact-message"
-                  className="text-chai text-base font-medium"
-                >
-                  Message
-                </label>
-                <textarea
-                  id="contact-message"
-                  name="message"
-                  rows={4}
-                  className="rounded-lg border-none bg-white px-4 py-3 text-carob focus:ring-2 focus:ring-matcha placeholder-chai/60 resize-none"
-                  placeholder="Message"
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                className="mt-2 bg-matcha text-vanilla font-semibold text-lg py-3 rounded-lg shadow-md hover:bg-matcha/90 transition-colors"
-              >
-                Send Message
-              </button>
             </form>
           )}
         </div>
