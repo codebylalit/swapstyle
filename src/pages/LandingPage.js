@@ -351,7 +351,7 @@ export default function LandingPage() {
               </ul>
             </div>
 
-            {/* Contact Info */}
+            {/* Contact Info
             <div>
               <h4 className="text-xl font-semibold mb-6">Contact Us</h4>
               <ul className="space-y-4">
@@ -368,7 +368,7 @@ export default function LandingPage() {
                   <span className="text-lg">San Francisco, CA</span>
                 </li>
               </ul>
-            </div>
+            </div> */}
           </div>
 
           {/* Bottom Bar */}
