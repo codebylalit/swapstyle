@@ -322,13 +322,13 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-8 py-16">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
             {/* Company Info */}
-            {/* <div className="lg:col-span-2">
+            <div className="lg:col-span-2">
               <h3 className="text-3xl font-bold mb-6">WearShare</h3>
               <p className="text-vanilla/80 mb-8 max-w-md text-lg leading-relaxed">
                 Making fashion sustainable through community-driven clothing exchange. 
                 Join thousands of members who are reducing waste and discovering unique style.
               </p>
-              <div className="flex space-x-6">
+              {/* <div className="flex space-x-6">
                 <a href="#" className="text-vanilla/80 hover:text-vanilla transition-colors p-2 hover:bg-vanilla/10 rounded-lg">
                   <Instagram className="h-6 w-6" />
                 </a>
@@ -338,8 +338,8 @@ export default function LandingPage() {
                 <a href="#" className="text-vanilla/80 hover:text-vanilla transition-colors p-2 hover:bg-vanilla/10 rounded-lg">
                   <Facebook className="h-6 w-6" />
                 </a>
-              </div>
-            </div> */}
+              </div> */}
+            </div>
 
             {/* Quick Links */}
             <div>
